@@ -1,103 +1,201 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+
+const forms = [
+  "Contato Rápido",
+  "Cotação Seguro",
+  "Plano de Saúde",
+  "Consórcio",
+];
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [currentForm, setCurrentForm] = useState(forms[0]);
+  const [status, setStatus] = useState("");
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setStatus("Enviando...");
+
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData.entries());
+
+    const response = await fetch("/api/send-email", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...data, tipo: currentForm }),
+    });
+
+    setStatus(response.ok ? "Enviado com sucesso!" : "Erro ao enviar.");
+    if (response.ok) e.currentTarget.reset();
+  };
+
+  const InputField = ({
+    name,
+    label,
+    type = "text",
+  }: {
+    name: string;
+    label: string;
+    type?: string;
+  }) => (
+    <div className="mb-3">
+      <label className="block font-medium">{label}</label>
+      <input
+        type={type}
+        name={name}
+        required
+        className="w-full border rounded px-3 py-2"
+      />
+    </div>
+  );
+
+  const TextareaField = ({ name, label }: { name: string; label: string }) => (
+    <div className="mb-3">
+      <label className="block font-medium">{label}</label>
+      <textarea
+        name={name}
+        required
+        className="w-full border rounded px-3 py-2"
+      />
+    </div>
+  );
+
+  const SelectField = ({
+    name,
+    label,
+    options,
+  }: {
+    name: string;
+    label: string;
+    options: string[];
+  }) => (
+    <div className="mb-3">
+      <label className="block font-medium">{label}</label>
+      <select name={name} required className="w-full border rounded px-3 py-2">
+        <option value="">Selecione</option>
+        {options.map((opt) => (
+          <option key={opt} value={opt}>
+            {opt}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+
+  const renderFormFields = () => {
+    switch (currentForm) {
+      case "Contato Rápido":
+        return (
+          <>
+            <InputField name="nome_completo" label="Nome Completo" />
+            <InputField name="telefone" label="Telefone / WhatsApp" />
+            <InputField name="email" label="E-mail" type="email" />
+            <SelectField
+              name="servico"
+              label="Qual serviço você precisa?"
+              options={["Seguro", "Plano de Saúde", "Consórcio"]}
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            <TextareaField name="mensagem" label="Mensagem" />
+          </>
+        );
+      case "Cotação Seguro":
+        return (
+          <>
+            <InputField name="nome" label="Nome" />
+            <InputField name="cpf_cnpj" label="CPF / CNPJ" />
+            <InputField name="telefone" label="Telefone / WhatsApp" />
+            <InputField name="email" label="E-mail" type="email" />
+            <SelectField
+              name="tipo_seguro"
+              label="Tipo de Seguro"
+              options={[
+                "Vida",
+                "Auto",
+                "Residencial",
+                "Empresarial",
+                "RC",
+                "Engenharia",
+                "Garantia",
+                "Fiança",
+              ]}
+            />
+            <TextareaField name="resumo" label="Resumo da necessidade" />
+          </>
+        );
+      case "Plano de Saúde":
+        return (
+          <>
+            <InputField name="responsavel" label="Nome do Responsável" />
+            <InputField name="empresa" label="Empresa (opcional)" />
+            <InputField name="telefone" label="Telefone / WhatsApp" />
+            <InputField name="email" label="E-mail" type="email" />
+            <SelectField
+              name="tipo_plano"
+              label="Tipo de Plano"
+              options={["Empresarial", "Familiar", "Individual"]}
+            />
+            <InputField
+              name="numero_vidas"
+              label="Número de vidas"
+              type="number"
+            />
+            <TextareaField name="idades" label="Idades dos beneficiários" />
+            <TextareaField
+              name="mensagem_adicional"
+              label="Mensagem adicional"
+            />
+          </>
+        );
+      case "Consórcio":
+        return (
+          <>
+            <InputField name="nome_completo" label="Nome completo" />
+            <InputField name="telefone" label="Telefone com WhatsApp" />
+            <InputField name="email" label="E-mail" type="email" />
+            <InputField
+              name="valor_aproximado"
+              label="Valor aproximado do bem ou objetivo"
+            />
+            <InputField name="cidade_estado" label="Cidade e Estado" />
+            <TextareaField name="observacoes" label="Observações adicionais" />
+          </>
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="p-6 max-w-3xl mx-auto">
+      <h1 className="text-2xl font-bold mb-4">Formulários</h1>
+      <div className="flex space-x-2 mb-6">
+        {forms.map((f) => (
+          <button
+            key={f}
+            type="button"
+            onClick={() => {
+              setCurrentForm(f);
+              setStatus("");
+            }}
+            className={`px-3 py-1 border rounded ${
+              f === currentForm ? "bg-blue-500 text-white" : "bg-gray-100"
+            }`}
           >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+            {f}
+          </button>
+        ))}
+      </div>
+      <form onSubmit={handleSubmit}>
+        {renderFormFields()}
+        <button
+          type="submit"
+          className="w-full py-2 mt-4 bg-green-600 text-white rounded"
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          Enviar
+        </button>
+        {status && <p className="mt-2">{status}</p>}
+      </form>
     </div>
   );
 }
