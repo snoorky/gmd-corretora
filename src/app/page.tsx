@@ -192,7 +192,7 @@ export default function Home() {
           type="submit"
           className="w-full py-2 mt-4 bg-green-600 text-white rounded"
         >
-          Enviar
+          Enviar mensagem
         </button>
         {status && <p className="mt-2">{status}</p>}
       </form>
