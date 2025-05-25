@@ -23,7 +23,9 @@ export default function Authority() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-4">
         {autorithy.map((item, index) => (
           <div key={index} className="flex flex-col items-center text-center">
-            <h2 className="text-blue font-bold">{item.title}</h2>
+            <strong className="text-blue font-bold text-3xl md:text-4xl lg:text-5xl">
+              {item.title}
+            </strong>
             <p className="text-white">{item.description}</p>
           </div>
         ))}

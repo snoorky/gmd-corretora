@@ -117,27 +117,26 @@ export default function Testimonials() {
           <div key={index}>
             <button
               onClick={() => toggleQuestion(index)}
-              className="w-full flex justify-between items-center rounded-2xl bg-blue text-white"
+              className={`w-full flex justify-between items-center ${
+                openIndex === index && "rounded-t-2xl rounded-b-none"
+              } bg-blue text-white`}
             >
               {faq.question}
-              {openIndex === index ? (
-                <Image
-                  alt="Ícone de FAQ recolhida"
-                  src={"/icons/chevron-down.svg"}
-                  width={24}
-                  height={24}
-                />
-              ) : (
-                <Image
-                  alt="Ícone de FAQ expandida"
-                  src={"/icons/chevron-up.svg"}
-                  width={24}
-                  height={24}
-                />
-              )}
+              <Image
+                alt="Ícone de FAQ recolhida"
+                src={
+                  openIndex === index
+                    ? "/icons/chevron-down.svg"
+                    : "/icons/chevron-up.svg"
+                }
+                width={24}
+                height={24}
+              />
             </button>
             {openIndex === index && (
-              <div className="p-1 text-dark">{faq.answer}</div>
+              <div className="bg-white rounded-b-2xl p-4 text-dark">
+                {faq.answer}
+              </div>
             )}
           </div>
         ))}

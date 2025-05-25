@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import Link from "next/link";
+import Image from "next/image";
 
 const myFont = localFont({
   src: "./fonts/BebasNeue.ttf",
@@ -65,7 +67,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={myFont.className}>
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        {children}
+        <Link href="" target="_blank">
+          <Image
+            src="/whatsapp.avif"
+            width={80}
+            height={80}
+            className="z-1 fixed bottom-5 right-5"
+            alt="ícone do WhatsApp para entrar em contato"
+          />
+        </Link>
+      </body>
     </html>
   );
 }

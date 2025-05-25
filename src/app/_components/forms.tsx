@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 
 interface FormProps {
@@ -51,27 +52,42 @@ export default function Forms({ label }: FormProps) {
     <textarea
       name={props.name}
       placeholder={props.placeholder}
-      className={`h-20 pt-2 ${props.formClass}`}
+      className={`h-20 pt-2 resize-none ${props.formClass}`}
       required
     />
   );
 
   const FormSelect = (props: OptionsProps) => (
-    <select
-      aria-label={props.name}
-      name={props.name}
-      className={`h-10 md:h-12 ${props.formClass}`}
-      required
-    >
-      <option disabled hidden>
-        {label}
-      </option>
-      {props.options.map((item, index) => (
-        <option key={index} value={item}>
-          {item}
+    <div className={`${props.formClass} relative`}>
+      <select
+        aria-label={props.name}
+        name={props.name}
+        className="h-10 md:h-12 w-full"
+        style={{
+          WebkitAppearance: "none",
+          MozAppearance: "none",
+          appearance: "none",
+        }}
+        defaultValue=""
+        required
+      >
+        <option value="" disabled hidden>
+          {props.label}
         </option>
-      ))}
-    </select>
+        {props.options.map((item, index) => (
+          <option key={index} value={item}>
+            {item}
+          </option>
+        ))}
+      </select>
+      <Image
+        src="/icons/select-chevron.svg"
+        alt="dropdown icon"
+        className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2"
+        width={16}
+        height={16}
+      />
+    </div>
   );
 
   const FormCheckbox = (props: OptionsProps) => (
@@ -192,7 +208,7 @@ export default function Forms({ label }: FormProps) {
             />
             <FormSelect
               name="idades"
-              label="Idades Dependentes"
+              label="Idades"
               formClass="col-span-9 md:col-span-3"
               options={[
                 "0–5 anos",
