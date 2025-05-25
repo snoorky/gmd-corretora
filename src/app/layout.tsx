@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 
-export const myFont = localFont({
+const myFont = localFont({
   src: "./fonts/BebasNeue.ttf",
 });
 
