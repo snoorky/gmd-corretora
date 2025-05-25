@@ -22,7 +22,8 @@ export default function Forms({ label }: FormProps) {
     e.preventDefault();
     setStatus("Enviando...");
 
-    const formData = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
 
     const response = await fetch("/api/send-email", {
@@ -32,7 +33,8 @@ export default function Forms({ label }: FormProps) {
     });
 
     setStatus(response.ok ? "Enviado com sucesso!" : "Erro ao enviar.");
-    if (response.ok) e.currentTarget.reset();
+    if (response.ok) form.reset();
+    setTimeout(() => setStatus(""), 3000);
   };
 
   const FormInput = (props: FormProps) => (
