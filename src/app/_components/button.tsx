@@ -3,17 +3,26 @@ import Link from "next/link";
 
 interface ButtonProps {
   label: string;
+  target?: string;
   url: string;
   icon?: string;
   isPrimary?: boolean;
   size?: number;
 }
 
-export function Button({ label, url, icon, isPrimary, size }: ButtonProps) {
+export function Button({
+  label,
+  target = "_blank",
+  url,
+  icon,
+  isPrimary,
+  size,
+}: ButtonProps) {
   return (
     <Link
       href={url}
-      className={`${isPrimary ? "bg-orange" : "bg-blue"} text-white`}
+      target={target}
+      className={`${isPrimary ? "bg-blue" : "bg-orange"} text-white`}
     >
       {icon && (
         <Image

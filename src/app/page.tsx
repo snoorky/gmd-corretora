@@ -1,5 +1,4 @@
 import About from "./_components/about";
-import Authority from "./_components/authority";
 import Consortium from "./_components/consortium";
 import Footer from "./_components/footer";
 import Health from "./_components/health";
@@ -17,7 +16,6 @@ export default function Home() {
       <Partners />
       <Consortium />
       <About />
-      <Authority />
       <Testimonials />
       <Footer />
     </>

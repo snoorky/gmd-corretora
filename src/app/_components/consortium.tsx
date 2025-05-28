@@ -61,7 +61,11 @@ export default function Consortium() {
               </div>
             ))}
           </div>
-          <Button label="Falar com um Consultor" url="" isPrimary />
+          <Button
+            label="Falar com um Consultor"
+            url="https://api.whatsapp.com/send?phone=5515981377486&text=Olá!+Tenho+interesse+em+consórcio+e+gostaria+de+ajuda+para+escolher+uma+opção+que+combine+com+meus+objetivos."
+            isPrimary
+          />
         </div>
         <div className="bg-white/70 space-y-4 rounded-2xl text-dark mt-6 md:mt-12 xl:mt-0 p-4 md:p-8 xl:w-[40%]">
           <h3>Informe seu objetivo e receba as melhores opções do mercado.</h3>

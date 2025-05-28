@@ -9,6 +9,10 @@
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     @apply 2xl:bg-blue-300;
   }

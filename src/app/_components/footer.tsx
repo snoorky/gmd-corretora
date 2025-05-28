@@ -5,8 +5,13 @@ import Forms from "./forms";
 const contact = [
   {
     icon: "whatsapp-fill",
-    title: "WhatsApp: (15) 3100-3979",
-    url: "",
+    title: "WhatsApp: (15) 98137-7486",
+    url: "https://api.whatsapp.com/send?phone=5515981377486",
+  },
+  {
+    icon: "whatsapp-fill",
+    title: "Telefone: (15) 3100-3979",
+    url: "tel:+551531003979",
   },
   {
     icon: "mail",
@@ -15,8 +20,8 @@ const contact = [
   },
   {
     icon: "local",
-    title: "Rodovia Raposo Tavares km 95, sorocaba/SP",
-    url: "",
+    title: "Rua Dorli Nunes, 25, Bairro Caputera, Sorocaba/SP, 18017-376",
+    url: "https://www.google.com/maps/dir//GMD+Bus+%7C+GMD+Corretora+-+Rua+Dorli+Nunes+25,+Rod.+Raposo+Tavares,+km+95+-+Caputera,+Sorocaba+-+SP,+18017-376/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x94cf619faeedfa6d:0x7816b5bb13f39c75?sa=X&ved=1t:57443&ictx=111",
   },
   {
     icon: "instagram",
@@ -45,7 +50,7 @@ export default function Footer() {
                   width={24}
                   height={24}
                 />
-                <Link className="p-0" href={item.url}>
+                <Link className="p-0" target="_blank" href={item.url}>
                   {item.title}
                 </Link>
               </div>

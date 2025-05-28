@@ -8,28 +8,32 @@ const insurances = [
     title: "Seguro de Vida",
     description: "Proteja quem você ama com coberturas essenciais",
     buttonLabel: "Proteger minha Família",
-    buttonText: "/",
+    buttonText:
+      "Olá!+Tenho+interesse+no+Seguro+de+Vida+e+gostaria+de+mais+informações+para+proteger+eu+e+minha+família",
   },
   {
     image: "seguro-auto",
     title: "Seguro Auto",
     description: "Proteção completa para seu veículo com assistência 24h",
     buttonLabel: "Proteger meu Veículo",
-    buttonText: "/",
+    buttonText:
+      "Olá!+Quero+saber+mais+sobre+o+Seguro+Auto+com+proteção+completa+e+assistência+24h",
   },
   {
     image: "seguro-residencial",
     title: "Seguro Residencial",
     description: "Seu lar protegido contra incêndios, furtos e imprevistos",
     buttonLabel: "Proteger minha Casa",
-    buttonText: "/",
+    buttonText:
+      "Olá!+Estou+em+busca+de+um+Seguro+Residencial+para+proteger+minha+casa.+Pode+me+ajudar?",
   },
   {
     image: "seguro-empresarial",
     title: "Seguro Empresarial",
     description: "Segurança para patrimônio, equipamentos, estoque e mais",
     buttonLabel: "Proteger minha Empresa",
-    buttonText: "/",
+    buttonText:
+      "Olá!+Tenho+interesse+no+Seguro+Empresarial+para+proteger+meu+negócio.+Pode+me+dar+mais+detalhes?",
   },
   {
     image: "seguro-viagem",
@@ -37,34 +41,38 @@ const insurances = [
     description:
       "Proteção completa para você viajar tranquilo, no Brasil ou exterior",
     buttonLabel: "Viajar com Segurança",
-    buttonText: "/",
+    buttonText:
+      "Olá!+Estou+planejando+uma+viagem+e+gostaria+de+contratar+um+Seguro+Viagem.+Pode+me+ajudar?",
   },
   {
     image: "seguro-garantia",
     title: "Seguro Garantia",
     description: "Garantias para contratos, licitações e processos judiciais",
     buttonLabel: "Solicitar uma Garantia",
-    buttonText: "/",
+    buttonText:
+      "Olá!+Preciso+de+informações+sobre+Seguro+Garantia+para+contratos+ou+licitações.",
   },
   {
     image: "seguro-fianca",
     title: "Seguro Fiança",
     description: "Aluguel sem fiador, com mais segurança e praticidade",
     buttonLabel: "Alugar sem Fiador",
-    buttonText: "/",
+    buttonText:
+      "Olá!+Gostaria+de+saber+mais+sobre+o+Seguro+Fiança+para+alugar+um+imóvel+sem+fiador.",
   },
   {
     image: "responsabilidade-civil",
     title: "Responsabilidade Civil",
     description: "Coberturas para RC Geral, Profissional, Médico, D&O e outros",
     buttonLabel: "Solicitar Cotação de RC",
-    buttonText: "/",
+    buttonText:
+      "Olá!+Tenho+interesse+em+um+seguro+de+Responsabilidade+Civil.+Pode+me+orientar?",
   },
 ];
 
 export default function Insurances() {
   return (
-    <div className="relative">
+    <div className="relative overflow-hidden">
       <section className="relative z-1 flex flex-col text-center">
         <h2 className="text-orange">Seguros</h2>
         <h4 className="-mt-2">Para Você e sua Empresa</h4>
@@ -93,23 +101,26 @@ export default function Insurances() {
               <div className="px-2 md:px-4">
                 <Button
                   label={item.buttonLabel}
-                  url={item.buttonText}
+                  url={`https://api.whatsapp.com/send?phone=5515981377486&text=${item.buttonText}`}
                   isPrimary
                 />
               </div>
             </div>
           ))}
         </div>
-        <div className="relative rounded-2xl overflow-hidden p-4 md:p-8 xl:p-12 xl:min-h-[30rem] border border-black/25">
+        <div
+          id="simular"
+          className="relative rounded-2xl overflow-hidden p-4 md:p-8 xl:p-12 xl:min-h-[30rem] border border-black/25 scroll-mt-[50vh]"
+        >
           <Image
             alt="Família sorrindo por possuir seguro"
             src={"/seguro-background.png"}
             className="absolute object-cover object-top"
             fill
           />
-          <div className="relative text-left space-y-2 xl:space-y-6 w-[70%] md:w-[50%] xl:w-[30%]">
+          <div className="relative text-left space-y-2 xl:space-y-6 w-[72%] md:w-[50%] xl:w-[30%]">
             <h3>
-              Nos diga o que você precisa e nós encontramos o seguro certo
+              Fale com a gente e nós encontraremos o seguro ideal para você!
             </h3>
             <Forms label="Seguros" />
           </div>

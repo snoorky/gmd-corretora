@@ -58,7 +58,11 @@ export default function Health() {
               </div>
             ))}
           </div>
-          <Button label="Entrar em Contato" url="" isPrimary />
+          <Button
+            label="Entrar em Contato"
+            url="https://api.whatsapp.com/send?phone=5515981377486&text=Olá!+Tenho+interesse+em+planos+de+saúde+e+gostaria+de+ajuda+para+encontrar+a+melhor+opção+disponível."
+            isPrimary
+          />
         </div>
         <div className="bg-white/70 space-y-4 rounded-2xl text-dark mt-6 md:mt-12 xl:mt-0 p-4 md:p-8 xl:w-[40%]">
           <h3>

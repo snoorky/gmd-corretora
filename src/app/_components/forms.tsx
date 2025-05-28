@@ -16,6 +16,179 @@ interface OptionsProps extends FormProps {
   options: string[];
 }
 
+interface AgeRange extends FormProps {
+  id: string;
+  value?: { faixa: string; quantidade: number }[];
+}
+
+const FaixaIdadeSelect = ({ name, label, formClass, value = [] }: AgeRange) => {
+  const [open, setOpen] = useState(false);
+
+  const [selecionados, setSelecionados] = useState<Record<string, number>>(
+    () => {
+      const map: Record<string, number> = {};
+      value.forEach(({ faixa, quantidade }) => {
+        map[faixa] = quantidade;
+      });
+      return map;
+    }
+  );
+
+  const toggleOpen = () => setOpen((prev) => !prev);
+
+  const handleQuantidadeChange = (faixaId: string, quantidadeStr: string) => {
+    const quantidade = Math.max(0, Math.min(99, Number(quantidadeStr) || 0));
+    const novosSelecionados = { ...selecionados, [faixaId]: quantidade };
+    setSelecionados(novosSelecionados);
+  };
+
+  const faixas: AgeRange[] = [
+    { id: "0-17", label: "0 a 17 anos" },
+    { id: "18-30", label: "18 a 30 anos" },
+    { id: "31-45", label: "31 a 45 anos" },
+    { id: "46-60", label: "46 a 60 anos" },
+    { id: "60+", label: "Acima de 60 anos" },
+  ];
+
+  const faixasSelecionadas = Object.entries(selecionados).filter(
+    ([_, quantidade]) => quantidade > 0
+  );
+  const totalVidas = faixasSelecionadas.reduce((acc, [_, qtd]) => acc + qtd, 0);
+
+  const resumo =
+    faixasSelecionadas.length === 0
+      ? label
+      : `${faixasSelecionadas.length} faixa(s), ${totalVidas} vida(s)`;
+
+  return (
+    <div className={`relative ${formClass}`}>
+      <button
+        type="button"
+        onClick={toggleOpen}
+        className="w-full outline-none text-left border border-black/25 bg-white text-dark placeholder:text-dark"
+        aria-haspopup="listbox"
+        aria-expanded={open}
+      >
+        {resumo}
+      </button>
+      <Image
+        src="/icons/select-chevron.svg"
+        alt="dropdown icon"
+        className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2"
+        width={16}
+        height={16}
+      />
+
+      {open && (
+        <div
+          className="z-10 absolute w-full mt-1 p-4 rounded-2xl shadow-lg border border-black/25 bg-white text-dark placeholder:text-dark"
+          role="listbox"
+        >
+          {faixas.map(({ id, label }) => (
+            <div
+              key={id}
+              className="flex justify-between items-center mb-2 last:mb-0"
+            >
+              <label htmlFor={`${name}-${id}`} className="select-none">
+                {label}
+              </label>
+              <input
+                id={`${name}-${id}`}
+                name={`${name}-${id}`}
+                type="number"
+                min={0}
+                max={99}
+                value={selecionados[id] ?? ""}
+                onChange={(e) => handleQuantidadeChange(id, e.target.value)}
+                className="rounded-xl text-center border border-black/25"
+                placeholder="0"
+              />
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+const FormInput = (props: FormProps) => (
+  <input
+    name={props.name}
+    placeholder={props.placeholder}
+    type={props.type}
+    className={`h-10 md:h-12 ${props.formClass}`}
+    required={props.required}
+  />
+);
+
+const FormTextArea = (props: FormProps) => (
+  <textarea
+    name={props.name}
+    placeholder={props.placeholder}
+    className={`h-20 pt-2 resize-none ${props.formClass}`}
+    required
+  />
+);
+
+const FormSelect = (props: OptionsProps) => (
+  <div className={`${props.formClass} relative`}>
+    <select
+      aria-label={props.name}
+      name={props.name}
+      className="h-10 md:h-12 w-full"
+      style={{
+        WebkitAppearance: "none",
+        MozAppearance: "none",
+        appearance: "none",
+      }}
+      defaultValue=""
+      required
+    >
+      <option value="" disabled hidden>
+        {props.label}
+      </option>
+      {props.options.map((item, index) => (
+        <option key={index} value={item}>
+          {item}
+        </option>
+      ))}
+    </select>
+    <Image
+      src="/icons/select-chevron.svg"
+      alt="dropdown icon"
+      className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2"
+      width={16}
+      height={16}
+    />
+  </div>
+);
+
+const FormCheckbox = (props: OptionsProps) => (
+  <fieldset className={`text-left px-2 ${props.formClass}`}>
+    <legend className="font-semibold my-2">{props.label}</legend>
+    <div className="flex items-center flex-wrap gap-2">
+      {props.options.map((option, index) => (
+        <label key={index}>
+          <input
+            name={props.name}
+            value={option}
+            type="checkbox"
+            className="accent-orange rounded-none px-0"
+            required
+          />
+          <span className="ml-1">{option}</span>
+        </label>
+      ))}
+    </div>
+  </fieldset>
+);
+
+const FormButton = (props: FormProps) => (
+  <button type="submit" className={`text-white bg-orange ${props.formClass}`}>
+    {props.label}
+  </button>
+);
+
 export default function Forms({ label }: FormProps) {
   const [status, setStatus] = useState("");
 
@@ -38,84 +211,6 @@ export default function Forms({ label }: FormProps) {
     setTimeout(() => setStatus(""), 3000);
   };
 
-  const FormInput = (props: FormProps) => (
-    <input
-      name={props.name}
-      placeholder={props.placeholder}
-      type={props.type}
-      className={`h-10 md:h-12 ${props.formClass}`}
-      required={props.required}
-    />
-  );
-
-  const FormTextArea = (props: FormProps) => (
-    <textarea
-      name={props.name}
-      placeholder={props.placeholder}
-      className={`h-20 pt-2 resize-none ${props.formClass}`}
-      required
-    />
-  );
-
-  const FormSelect = (props: OptionsProps) => (
-    <div className={`${props.formClass} relative`}>
-      <select
-        aria-label={props.name}
-        name={props.name}
-        className="h-10 md:h-12 w-full"
-        style={{
-          WebkitAppearance: "none",
-          MozAppearance: "none",
-          appearance: "none",
-        }}
-        defaultValue=""
-        required
-      >
-        <option value="" disabled hidden>
-          {props.label}
-        </option>
-        {props.options.map((item, index) => (
-          <option key={index} value={item}>
-            {item}
-          </option>
-        ))}
-      </select>
-      <Image
-        src="/icons/select-chevron.svg"
-        alt="dropdown icon"
-        className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2"
-        width={16}
-        height={16}
-      />
-    </div>
-  );
-
-  const FormCheckbox = (props: OptionsProps) => (
-    <fieldset className={`text-left px-2 ${props.formClass}`}>
-      <legend className="font-semibold my-2">{label}</legend>
-      <div className="flex items-center flex-wrap gap-2">
-        {props.options.map((option, index) => (
-          <label key={index}>
-            <input
-              name={props.name}
-              value={option}
-              type="checkbox"
-              className="accent-orange rounded-none px-0"
-              required
-            />
-            <span className="ml-1">{option}</span>
-          </label>
-        ))}
-      </div>
-    </fieldset>
-  );
-
-  const FormButton = (props: FormProps) => (
-    <button type="submit" className={`text-white bg-orange ${props.formClass}`}>
-      {props.label}
-    </button>
-  );
-
   const renderFormFields = () => {
     switch (label) {
       case "Seguros":
@@ -134,16 +229,10 @@ export default function Forms({ label }: FormProps) {
               formClass="col-span-9"
             />
             <FormInput
-              name="registro"
-              placeholder="CPF/CNPJ"
-              type="text"
-              formClass="col-span-9 md:col-span-4 xl:col-span-9"
-            />
-            <FormInput
               name="telefone"
               placeholder="Telefone/WhatsApp"
               type="tel"
-              formClass="col-span-9 md:col-span-5 xl:col-span-9"
+              formClass="col-span-9"
             />
             <FormSelect
               name="seguros"
@@ -153,7 +242,8 @@ export default function Forms({ label }: FormProps) {
                 "Vida",
                 "Auto",
                 "Residencial",
-                "RC",
+                "Empresial",
+                "Responsabilidade Civil",
                 "Engenharia",
                 "Garantia",
                 "Fiança",
@@ -185,14 +275,14 @@ export default function Forms({ label }: FormProps) {
               name="empresa"
               placeholder="Empresa (opcional)"
               type="text"
-              formClass="col-span-9 md:col-span-3 xl:col-span-5"
+              formClass="col-span-9 md:col-span-5 xl:col-span-5"
               required={false}
             />
             <FormInput
               name="telefone"
               placeholder="Telefone/WhatsApp"
               type="tel"
-              formClass="col-span-9 md:col-span-3 xl:col-span-4"
+              formClass="col-span-9 md:col-span-4 xl:col-span-4"
             />
             <FormSelect
               name="plano"
@@ -200,25 +290,11 @@ export default function Forms({ label }: FormProps) {
               formClass="col-span-9 md:col-span-3"
               options={["Empresarial", "Familiar", "Individual"]}
             />
-            <FormInput
-              name="dependentes"
-              placeholder="Dependentes"
-              type="number"
-              formClass="col-span-9 md:col-span-6 xl:col-span-3"
-            />
-            <FormSelect
+            <FaixaIdadeSelect
+              id=""
               name="idades"
-              label="Idades"
-              formClass="col-span-9 md:col-span-3"
-              options={[
-                "0–5 anos",
-                "6–17 anos",
-                "18–25 anos",
-                "26–35 anos",
-                "36–45 anos",
-                "46–60 anos",
-                "60+ anos",
-              ]}
+              label="Idades dos beneficiários"
+              formClass="col-span-9 md:col-span-6"
             />
             <FormTextArea
               name="mensagem"
@@ -275,12 +351,10 @@ export default function Forms({ label }: FormProps) {
               formClass="col-span-9"
               options={[
                 "Imóvel residencial",
-                "Alavancagem patrimonial",
-                "Capital de giro",
-                "Pesados (ônibus ou caminhões)",
                 "Imóvel comercial",
-                "Veículo (carro ou moto)",
-                "Troca de dívidas por taxa menor",
+                "Veículos pesados",
+                "Veículos leves",
+                "Outros",
               ]}
             />
             <FormTextArea

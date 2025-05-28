@@ -30,10 +30,17 @@ export default function Hero() {
           Seguro, Plano de Saúde e Consórcio sob medida para você ou sua empresa
         </h6>
         <div className="flex gap-2 md:gap-4">
-          <Button label="Simule agora" url="" icon="form" isPrimary size={24} />
+          <Button
+            label="Simule agora"
+            url="#simular"
+            target="_self"
+            icon="form"
+            isPrimary
+            size={24}
+          />
           <Button
             label="Fale com um Consultor"
-            url=""
+            url="https://api.whatsapp.com/send?phone=5515981377486&text=Olá!+Gostaria+de+falar+com+um+consultor+sobre+seguro,+plano+de+saúde+ou+consórcio+sob+medida"
             icon="whatsapp"
             size={20}
           />

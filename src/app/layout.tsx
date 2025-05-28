@@ -69,12 +69,15 @@ export default function RootLayout({
     <html lang="en" className={myFont.className}>
       <body className="antialiased">
         {children}
-        <Link href="" target="_blank">
+        <Link
+          href="https://api.whatsapp.com/send?phone=5515981377486&text=Olá!+Gostaria+de+falar+com+um+consultor+sobre+seguro,+plano+de+saúde+ou+consórcio+sob+medida"
+          target="_blank"
+          className="z-1 fixed bottom-2 right-2"
+        >
           <Image
             src="/whatsapp.avif"
             width={80}
             height={80}
-            className="z-1 fixed bottom-5 right-5"
             alt="ícone do WhatsApp para entrar em contato"
           />
         </Link>
