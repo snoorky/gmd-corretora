@@ -13,10 +13,6 @@
     scroll-behavior: smooth;
   }
 
-  body {
-    @apply 2xl:bg-blue-300;
-  }
-
   main {
     @apply px-4 md:px-16 lg:px-24 xl:px-32;
     @apply pb-8 md:pb-16 lg:pb-24 xl:pb-32;

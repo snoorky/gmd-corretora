@@ -73,7 +73,7 @@ export default function Footer() {
           />
         </div>
         <p>© 2025 GMD Corretora. Todos os direitos reservados.</p>
-        <p>Desenvolvido por Raphael</p>
+        <p>Desenvolvido por Snoorky</p>
       </div>
     </footer>
   );

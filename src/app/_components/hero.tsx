@@ -23,8 +23,9 @@ export default function Hero() {
             priority
           />
         </div>
-        <h1>
-          Proteção para o que realmente <strong>importa</strong>
+        <h1 className="xl:w-3xl">
+          Contemplar <strong>sonhos</strong> com <strong>segurança</strong> e{" "}
+          <strong>tranquilidade</strong>
         </h1>
         <h6>
           Seguro, Plano de Saúde e Consórcio sob medida para você ou sua empresa

@@ -43,11 +43,16 @@ const FaixaIdadeSelect = ({ name, label, formClass, value = [] }: AgeRange) => {
   };
 
   const faixas: AgeRange[] = [
-    { id: "0-17", label: "0 a 17 anos" },
-    { id: "18-30", label: "18 a 30 anos" },
-    { id: "31-45", label: "31 a 45 anos" },
-    { id: "46-60", label: "46 a 60 anos" },
-    { id: "60+", label: "Acima de 60 anos" },
+    { id: "0-18", label: "0 a 18 anos" },
+    { id: "19-23", label: "19 a 23 anos" },
+    { id: "24-28", label: "24 a 28 anos" },
+    { id: "29-33", label: "29 a 33 anos" },
+    { id: "34-38", label: "34 a 38 anos" },
+    { id: "39-43", label: "39 a 43 anos" },
+    { id: "44-48", label: "44 a 48 anos" },
+    { id: "49-53", label: "49 a 53 anos" },
+    { id: "54-58", label: "54 a 58 anos" },
+    { id: "59+", label: "Acima de 59 anos" },
   ];
 
   const faixasSelecionadas = Object.entries(selecionados).filter(
@@ -81,13 +86,13 @@ const FaixaIdadeSelect = ({ name, label, formClass, value = [] }: AgeRange) => {
 
       {open && (
         <div
-          className="z-10 absolute w-full mt-1 p-4 rounded-2xl shadow-lg border border-black/25 bg-white text-dark placeholder:text-dark"
+          className="z-10 absolute grid grid-cols-2 xl:grid-cols-1 gap-1 gap-x-4 w-full mt-1 p-4 rounded-2xl shadow-lg border border-black/25 bg-white text-dark placeholder:text-dark"
           role="listbox"
         >
           {faixas.map(({ id, label }) => (
             <div
               key={id}
-              className="flex justify-between items-center mb-2 last:mb-0"
+              className="col-span-1 flex justify-between items-center"
             >
               <label htmlFor={`${name}-${id}`} className="select-none">
                 {label}
@@ -394,7 +399,7 @@ export default function Forms({ label }: FormProps) {
             />
             <FormSelect
               name="servico"
-              label="Tipo de Seguro"
+              label="Tipo de Serviço"
               formClass="col-span-9 md:col-span-5"
               options={["Seguro", "Plano de Saúde", "Consórcio"]}
             />
