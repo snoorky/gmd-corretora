@@ -75,7 +75,7 @@ export default function RootLayout({
           className="z-1 fixed bottom-2 right-2"
         >
           <Image
-            src="/whatsapp.avif"
+            src="/whatsapp.png"
             width={80}
             height={80}
             alt="ícone do WhatsApp para entrar em contato"
