@@ -76,10 +76,10 @@ function generateEmailHtml(data: Record<string, string>) {
 
       return `
         <tr>
-          <td style="font-weight:bold; border-bottom: 1px solid #3f3f3f5a; background:#f0f0f0; color:#1e3759">
+          <td style="font-weight:bold; border-bottom: 1px solid #3f3f3f5a; background:#f0f0f0; color:#1e3759; border-left: 1px solid #3f3f3f5a;">
             ${label}
           </td>
-          <td style="border-bottom: 1px solid #3f3f3f5a">
+          <td style="border-bottom:1px solid #3f3f3f5a; border-right: 1px solid #3f3f3f5a;">
             ${renderValue(key, value)}
           </td>
         </tr>
@@ -90,8 +90,8 @@ function generateEmailHtml(data: Record<string, string>) {
   const tipo = data.tipo || "Formulário";
 
   return `
-    <body style="font-family: Arial, sans-serif; margin:0 auto; padding:2rem; background-color: #ffffff; color:#3f3f3f">
-      <table role="presentation" cellspacing="0" cellpadding="16" border="0" width="700" align="center" style="border:1px solid #3f3f3f5a; background-color: #ffffff; border-radius:16px; overflow: hidden">
+    <body style="margin:0 auto; padding:2rem; background-color: #ffffff; color:#3f3f3f">
+      <table role="presentation" cellspacing="0" cellpadding="16" border="0" width="700" align="center" style="max-width:inherit; background-color:#ffffff; border-radius:16px 16px 0 0;">
         <thead>
           <tr>
             <th colspan="2" style="background:#ce5c3c; color:#ffffff; font-size:1.5rem; padding:1rem">
