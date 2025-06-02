@@ -37,19 +37,14 @@ export default function Footer() {
         <div className="md:w-[50%]">
           <h2 className="text-orange">Fale Conosco</h2>
           <p>
-            De norte a sul do país, a GMD Corretora está pronta para te atender
-            com soluções sob medida. Não importa onde você esteja — nossa
-            consultoria chega até você com eficiência, clareza e cuidado.
+            De norte a sul do país, a GMD Corretora está pronta para te atender com soluções sob
+            medida. Não importa onde você esteja — nossa consultoria chega até você com eficiência,
+            clareza e cuidado.
           </p>
           <div className="my-4 space-y-2">
             {contact.map((item, index) => (
               <div key={index} className="flex items-center gap-2">
-                <Image
-                  alt={item.icon}
-                  src={`/icons/${item.icon}.svg`}
-                  width={24}
-                  height={24}
-                />
+                <Image alt={item.icon} src={`/icons/${item.icon}.svg`} width={24} height={24} />
                 <Link className="p-0" target="_blank" href={item.url}>
                   {item.title}
                 </Link>
@@ -73,7 +68,7 @@ export default function Footer() {
           />
         </div>
         <p>© 2025 GMD Corretora. Todos os direitos reservados.</p>
-        <p>Desenvolvido por Snoorky Studio</p>
+        {/* <p>Desenvolvido por Snoorky Studio</p> */}
       </div>
     </footer>
   );
