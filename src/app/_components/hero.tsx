@@ -11,12 +11,12 @@ export default function Hero() {
         fill
         priority
       />
-      <div className="absolute w-screen h-full bg-black/50 inset-0"></div>
+      <div className="absolute w-screen h-full bg-black/25 inset-0"></div>
       <div className="relative flex flex-col items-center text-center">
-        <div className="relative w-[206px] md:w-[274px] lg:w-[324px] xl:w-[400px] h-[60px] md:h-[80px] lg:h-[94px] xl:h-[116px]">
+        <div className="relative w-[206px] md:w-[274px] lg:w-[324px] xl:w-[400px] h-[37px] md:h-[49px] lg:h-[58px] xl:h-[72px]">
           <Image
             alt="Logo da GMD Corretora"
-            src="/logo.png"
+            src="/logo.webp"
             sizes="(max-width: 767px) 206px, (max-width: 1023px) 274px, (max-width: 1279px) 324px, 400px"
             className="absolute"
             fill
@@ -27,9 +27,7 @@ export default function Hero() {
           Contemplar <strong>sonhos</strong> com <strong>segurança</strong> e{" "}
           <strong>tranquilidade</strong>
         </h1>
-        <h6>
-          Seguro, Plano de Saúde e Consórcio sob medida para você ou sua empresa
-        </h6>
+        <h6>Seguro, Plano de Saúde e Consórcio sob medida para você ou sua empresa</h6>
         <div className="flex gap-2 md:gap-4">
           <Button
             label="Simule agora"

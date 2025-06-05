@@ -57,10 +57,10 @@ export default function Footer() {
         </div>
       </div>
       <div className="z-0 flex flex-col items-center -mt-16 -mx-4 md:-mx-16 lg:-mx-24 xl:-mx-32 pb-3 md:pb-6 pt-20 bg-blue text-white">
-        <div className="relative w-[206px] md:w-[274px] lg:w-[324px] xl:w-[400px] h-[60px] md:h-[80px] lg:h-[94px] xl:h-[116px]">
+        <div className="relative w-[206px] md:w-[274px] lg:w-[324px] xl:w-[400px] h-[37px] md:h-[49px] lg:h-[58px] xl:h-[72px]">
           <Image
             alt="Logo da GMD Corretora"
-            src="/logo.png"
+            src="/logo-light.webp"
             sizes="(max-width: 767px) 206px, (max-width: 1023px) 274px, (max-width: 1279px) 324px, 400px"
             className="absolute"
             fill
