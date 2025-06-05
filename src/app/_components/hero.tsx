@@ -3,11 +3,11 @@ import { Button } from "./button";
 
 export default function Hero() {
   return (
-    <main className="relative w-screen h-auto pt-6 text-white">
+    <main className="relative w-screen h-auto pt-8 text-white">
       <Image
         alt="Imagem de background"
-        src="/hero-background.png"
-        className="absolute object-cover object-top"
+        src="/banners.jpg"
+        className="absolute object-cover transform scale-x-[-1]"
         fill
         priority
       />
