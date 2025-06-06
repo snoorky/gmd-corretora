@@ -23,10 +23,7 @@ export default function Hero() {
             priority
           />
         </div>
-        <h1 className="xl:w-3xl">
-          Contemplar <strong>sonhos</strong> com <strong>segurança</strong> e{" "}
-          <strong>tranquilidade</strong>
-        </h1>
+        <h1 className="xl:w-3xl">Contemplar sonhos com segurança e tranquilidade</h1>
         <h6>Seguro, Plano de Saúde e Consórcio sob medida para você ou sua empresa</h6>
         <div className="flex gap-2 md:gap-4">
           <Button
