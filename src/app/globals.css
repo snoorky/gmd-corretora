@@ -51,10 +51,6 @@
     @apply text-sm md:text-lg lg:text-xl xl:text-lg;
   }
 
-  strong {
-    @apply text-orange-light font-normal;
-  }
-
   a {
     @apply rounded-2xl;
     @apply flex items-center justify-center;
