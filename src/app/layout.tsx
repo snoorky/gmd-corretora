@@ -31,12 +31,12 @@ export const metadata: Metadata = {
     title: "GMD Corretora | Soluções em Seguros, Saúde e Consórcios",
     description:
       "Mais de 12 anos protegendo o que realmente importa. Conte com a GMD Corretora para encontrar o seguro, plano ou consórcio ideal.",
-    url: "https://gmdcorretora.com.br",
+    url: "https://www.gmdcorretora.com.br",
     type: "website",
     siteName: "GMD Corretora",
     images: [
       {
-        url: "https://gmdcorretora.com.br/logo.png",
+        url: "https://www.gmdcorretora.com.br/logo.png",
         width: 1200,
         height: 630,
         alt: "Família protegida com seguros GMD Corretora",
@@ -48,9 +48,9 @@ export const metadata: Metadata = {
     title: "GMD Corretora | Proteção e Planejamento Personalizados",
     description:
       "Especialistas em seguros, planos de saúde e consórcios. Atendimento humano e imparcial para garantir sua tranquilidade.",
-    images: ["https://gmdcorretora.com.br/logo.png"],
+    images: ["https://www.gmdcorretora.com.br/logo.png"],
   },
-  metadataBase: new URL("https://gmdcorretora.com.br"),
+  metadataBase: new URL("https://www.gmdcorretora.com.br"),
   robots: {
     index: true,
     follow: true,
@@ -67,6 +67,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={myFont.className}>
+      <head>
+        <link rel="icon" href="/favicon.png" />
+      </head>
       <body className="antialiased">
         {children}
         <Link
