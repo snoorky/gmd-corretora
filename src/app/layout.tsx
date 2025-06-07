@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Link from "next/link";
 import Image from "next/image";
+import GoogleAnalytics from "./_components/analytics";
 
 const myFont = localFont({
   src: "./fonts/BebasNeue.ttf",
@@ -71,6 +72,7 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.png" />
       </head>
       <body className="antialiased">
+        <GoogleAnalytics />
         {children}
         <Link
           href="https://api.whatsapp.com/send?phone=5515981377486&text=Olá!+Gostaria+de+falar+com+um+consultor+sobre+seguro,+plano+de+saúde+ou+consórcio+sob+medida"
