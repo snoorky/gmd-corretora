@@ -218,7 +218,21 @@ export default function Forms({ label }: FormProps) {
     const form = e.currentTarget;
     const formData = new FormData(form);
 
-    if (label === "Consórcio") {
+    if (label === "Saude") {
+      const raw = formData.get("idades") as string | null;
+      let array: { faixa: string; quantidade: number }[] = [];
+      try {
+        array = raw ? JSON.parse(raw) : [];
+      } catch {
+        array = [];
+      }
+      if (array.length === 0) {
+        setStatus("Seleciona a idade");
+        return;
+      }
+    }
+
+    if (label === "Consorcio") {
       const selecionados = formData.getAll("consorcio");
       if (selecionados.length === 0) {
         setStatus("Selecione um consórcio");
@@ -276,7 +290,7 @@ export default function Forms({ label }: FormProps) {
             {status && <p className="col-span-9 md:col-span-5">{status}</p>}
           </>
         );
-      case "Saúde":
+      case "Saude":
         return (
           <>
             <FormInput
