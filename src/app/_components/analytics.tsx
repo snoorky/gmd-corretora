@@ -29,6 +29,29 @@ export function AnalyticsScripts() {
         `}
       </Script>
 
+      <Script id="consent-reapply" strategy="beforeInteractive">
+        {`
+          (function(){
+            try {
+              const consent = localStorage.getItem('cookieConsent');
+              console.log('Reapply consent, localStorage cookieConsent=', consent);
+              if (consent === 'accepted') {
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); console.log('gtag reapply called:', arguments); }
+                gtag('consent','update',{
+                  ad_storage:         'granted',
+                  ad_user_data:       'granted',
+                  ad_personalization: 'granted',
+                  analytics_storage:  'granted'
+                });
+              }
+            } catch(err) {
+              console.error('Error reapplying consent:', err);
+            }
+          })();
+        `}
+      </Script>
+
       <Script
         id="gtm"
         strategy="afterInteractive"
@@ -68,6 +91,7 @@ export function CookieConsentBanner() {
     window.dataLayer = window.dataLayer || [];
     function gtag(...args: any[]) {
       window.dataLayer.push(args);
+      console.log("gtag consent update called:", args);
     }
     gtag("consent", "update", {
       ad_storage,
@@ -107,9 +131,11 @@ export function CookieConsentBanner() {
     localStorage.setItem("cookieConsent", "accepted");
     updateConsent("granted", "granted", "granted", "granted");
 
+    // reconfigura o GA4
     window.dataLayer = window.dataLayer || [];
     function gtag(...args: any[]) {
       window.dataLayer.push(args);
+      console.log("gtag config after accept called:", args);
     }
     gtag("config", "G-Y1T9FPW59X", {
       page_path: window.location.pathname,
