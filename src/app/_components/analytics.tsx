@@ -30,13 +30,13 @@ export function AnalyticsScripts() {
       </Script>
 
       <Script
-        id="gtm-script"
+        id="gtm"
         strategy="afterInteractive"
         src="https://www.googletagmanager.com/gtm.js?id=GTM-NZ8WGG2F"
       />
 
       <Script
-        id="ga-script"
+        id="ga"
         strategy="afterInteractive"
         src="https://www.googletagmanager.com/gtag/js?id=G-Y1T9FPW59X"
       />
@@ -78,10 +78,7 @@ export function CookieConsentBanner() {
   };
 
   useEffect(() => {
-    if (pathname.startsWith("/privacidade")) {
-      setVisible(false);
-      return;
-    }
+    if (pathname.startsWith("/privacidade")) return;
 
     const consent = localStorage.getItem("cookieConsent");
 
@@ -89,10 +86,19 @@ export function CookieConsentBanner() {
       setVisible(true);
     } else {
       setVisible(false);
+      updateConsent(
+        consent === "accepted" ? "granted" : "denied",
+        consent === "accepted" ? "granted" : "denied",
+        consent === "accepted" ? "granted" : "denied",
+        consent === "accepted" ? "granted" : "denied"
+      );
+
       if (consent === "accepted") {
-        updateConsent("granted", "granted", "granted", "granted");
-      } else {
-        updateConsent("denied", "denied", "denied", "denied");
+        window.dataLayer = window.dataLayer || [];
+        function gtag(...args: any[]) {
+          window.dataLayer.push(args);
+        }
+        gtag("config", "G-Y1T9FPW59X", { page_path: window.location.pathname });
       }
     }
   }, [pathname]);
