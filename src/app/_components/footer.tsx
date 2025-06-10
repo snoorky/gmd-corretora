@@ -53,7 +53,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="md:w-[50%]">
-          <Forms label="Rodapé" />
+          <Forms label="Contato" />
         </div>
       </div>
       <div className="z-0 flex flex-col items-center -mt-16 -mx-4 md:-mx-16 lg:-mx-24 xl:-mx-32 pb-3 md:pb-6 pt-20 bg-blue text-white">

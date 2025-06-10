@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface FormProps {
   name?: string;
@@ -23,26 +23,30 @@ interface AgeRange extends FormProps {
 
 const FaixaIdadeSelect = ({ name, label, formClass, value = [] }: AgeRange) => {
   const [open, setOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  const [selecionados, setSelecionados] = useState<Record<string, number>>(
-    () => {
-      const map: Record<string, number> = {};
-      value.forEach(({ faixa, quantidade }) => {
-        map[faixa] = quantidade;
-      });
-      return map;
-    }
-  );
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    };
 
-  const toggleOpen = () => setOpen((prev) => !prev);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
-  const handleQuantidadeChange = (faixaId: string, quantidadeStr: string) => {
-    const quantidade = Math.max(0, Math.min(99, Number(quantidadeStr) || 0));
-    const novosSelecionados = { ...selecionados, [faixaId]: quantidade };
-    setSelecionados(novosSelecionados);
-  };
+  const [selecionados, setSelecionados] = useState<Record<string, number>>(() => {
+    const map: Record<string, number> = {};
+    value.forEach(({ faixa, quantidade }) => {
+      map[faixa] = quantidade;
+    });
+    return map;
+  });
 
-  const faixas: AgeRange[] = [
+  const faixas = [
     { id: "0-18", label: "0 a 18 anos" },
     { id: "19-23", label: "19 a 23 anos" },
     { id: "24-28", label: "24 a 28 anos" },
@@ -55,18 +59,22 @@ const FaixaIdadeSelect = ({ name, label, formClass, value = [] }: AgeRange) => {
     { id: "59+", label: "Acima de 59 anos" },
   ];
 
-  const faixasSelecionadas = Object.entries(selecionados).filter(
-    ([_, quantidade]) => quantidade > 0
-  );
-  const totalVidas = faixasSelecionadas.reduce((acc, [_, qtd]) => acc + qtd, 0);
+  const toggleOpen = () => setOpen((prev) => !prev);
 
+  const handleQuantidadeChange = (faixaId: string, quantidadeStr: string) => {
+    const quantidade = Math.max(0, Math.min(99, Number(quantidadeStr) || 0));
+    setSelecionados((old) => ({ ...old, [faixaId]: quantidade }));
+  };
+
+  const faixasSelecionadas = Object.entries(selecionados).filter(([_, qtd]) => qtd > 0);
+  const totalVidas = faixasSelecionadas.reduce((acc, [_, qtd]) => acc + qtd, 0);
   const resumo =
     faixasSelecionadas.length === 0
       ? label
       : `${faixasSelecionadas.length} faixa(s), ${totalVidas} vida(s)`;
 
   return (
-    <div className={`relative ${formClass}`}>
+    <div ref={containerRef} className={`relative ${formClass}`}>
       <button
         type="button"
         onClick={toggleOpen}
@@ -75,54 +83,62 @@ const FaixaIdadeSelect = ({ name, label, formClass, value = [] }: AgeRange) => {
         aria-expanded={open}
       >
         {resumo}
+        <Image
+          src="/icons/select-chevron.svg"
+          alt="dropdown icon"
+          className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2"
+          width={16}
+          height={16}
+        />
       </button>
-      <Image
-        src="/icons/select-chevron.svg"
-        alt="dropdown icon"
-        className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2"
-        width={16}
-        height={16}
-      />
 
-      {open && (
-        <div
-          className="z-10 absolute grid grid-cols-2 xl:grid-cols-1 gap-1 gap-x-4 w-full mt-1 p-4 rounded-2xl shadow-lg border border-black/25 bg-white text-dark placeholder:text-dark"
-          role="listbox"
-        >
-          {faixas.map(({ id, label }) => (
-            <div
-              key={id}
-              className="col-span-1 flex justify-between items-center"
-            >
-              <label htmlFor={`${name}-${id}`} className="select-none">
-                {label}
-              </label>
-              <input
-                id={`${name}-${id}`}
-                name={`${name}-${id}`}
-                type="number"
-                min={0}
-                max={99}
-                value={selecionados[id] ?? ""}
-                onChange={(e) => handleQuantidadeChange(id, e.target.value)}
-                className="rounded-xl text-center border border-black/25"
-                placeholder="0"
-              />
-            </div>
-          ))}
-        </div>
-      )}
+      <div
+        className={`z-10 absolute grid grid-cols-2 xl:grid-cols-1 gap-1 gap-x-4 w-full mt-1 p-4 rounded-2xl shadow-lg border border-black/25 bg-white text-dark placeholder:text-dark transition-all duration-200 ${
+          open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }
+    `}
+        role="listbox"
+      >
+        {faixas.map(({ id, label }) => (
+          <div key={id} className="col-span-1 flex justify-between items-center">
+            <label htmlFor={`${name}-${id}`} className="select-none">
+              {label}
+            </label>
+            <input
+              id={`${name}-${id}`}
+              type="number"
+              min={0}
+              max={99}
+              value={selecionados[id] ?? ""}
+              onChange={(e) => handleQuantidadeChange(id, e.target.value)}
+              className="rounded-xl text-center border border-black/25"
+              placeholder="0"
+            />
+          </div>
+        ))}
+      </div>
+
+      <input
+        type="hidden"
+        name={name}
+        value={JSON.stringify(
+          faixasSelecionadas.map(([faixa, quantidade]) => ({
+            faixa,
+            quantidade,
+          }))
+        )}
+      />
     </div>
   );
 };
 
-const FormInput = (props: FormProps) => (
+const FormInput = ({ name, placeholder, type, formClass, required = true }: FormProps) => (
   <input
-    name={props.name}
-    placeholder={props.placeholder}
-    type={props.type}
-    className={`h-10 md:h-12 ${props.formClass}`}
-    required={props.required}
+    name={name}
+    placeholder={placeholder}
+    type={type}
+    className={`h-10 md:h-12 ${formClass}`}
+    required={required}
   />
 );
 
@@ -179,7 +195,6 @@ const FormCheckbox = (props: OptionsProps) => (
             value={option}
             type="checkbox"
             className="accent-orange rounded-none px-0"
-            required
           />
           <span className="ml-1">{option}</span>
         </label>
@@ -199,12 +214,25 @@ export default function Forms({ label }: FormProps) {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setStatus("Enviando...");
 
     const form = e.currentTarget;
     const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
 
+    if (label === "Consórcio") {
+      const selecionados = formData.getAll("consorcio");
+      if (selecionados.length === 0) {
+        setStatus("Selecione um consórcio");
+        return;
+      }
+    }
+
+    const data: Record<string, unknown> = {};
+    for (const key of formData.keys()) {
+      const valores = formData.getAll(key);
+      data[key] = valores.length > 1 ? valores : valores[0];
+    }
+
+    setStatus("Enviando...");
     const response = await fetch("/api/send-email", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -221,18 +249,8 @@ export default function Forms({ label }: FormProps) {
       case "Seguros":
         return (
           <>
-            <FormInput
-              name="nome"
-              placeholder="Nome Completo"
-              type="text"
-              formClass="col-span-9"
-            />
-            <FormInput
-              name="email"
-              placeholder="Email"
-              type="email"
-              formClass="col-span-9"
-            />
+            <FormInput name="nome" placeholder="Nome Completo" type="text" formClass="col-span-9" />
+            <FormInput name="email" placeholder="Email" type="email" formClass="col-span-9" />
             <FormInput
               name="telefone"
               placeholder="Telefone/WhatsApp"
@@ -254,10 +272,7 @@ export default function Forms({ label }: FormProps) {
                 "Fiança",
               ]}
             />
-            <FormButton
-              formClass="col-span-9 md:col-span-4"
-              label="Solicitar Cotação"
-            />
+            <FormButton formClass="col-span-9 md:col-span-4" label="Solicitar Cotação" />
             {status && <p className="col-span-9 md:col-span-5">{status}</p>}
           </>
         );
@@ -311,13 +326,11 @@ export default function Forms({ label }: FormProps) {
               formClass="col-span-9 md:col-span-4 xl:col-span-6"
             />
             {status && (
-              <p className="col-span-9 md:col-span-2 lg:col-span-2 xl:col-span-3">
-                {status}
-              </p>
+              <p className="col-span-9 md:col-span-2 lg:col-span-2 xl:col-span-3">{status}</p>
             )}
           </>
         );
-      case "Consórcio":
+      case "Consorcio":
         return (
           <>
             <FormInput
@@ -362,35 +375,19 @@ export default function Forms({ label }: FormProps) {
                 "Outros",
               ]}
             />
-            <FormTextArea
-              name="mensagem"
-              placeholder="Mensagem adicional"
-              formClass="col-span-9"
-            />
+            <FormTextArea name="mensagem" placeholder="Mensagem adicional" formClass="col-span-9" />
             <FormButton
               label="Simular Consórcio"
               formClass="col-span-9 md:col-span-2 xl:col-span-3"
             />
-            {status && (
-              <p className="col-span-9 md:col-span-2 xl:col-span-3">{status}</p>
-            )}
+            {status && <p className="col-span-9 md:col-span-3 xl:col-span-4">{status}</p>}
           </>
         );
-      case "Rodapé":
+      case "Contato":
         return (
           <>
-            <FormInput
-              name="nome"
-              placeholder="Nome Completo"
-              type="text"
-              formClass="col-span-9"
-            />
-            <FormInput
-              name="email"
-              placeholder="Email"
-              type="email"
-              formClass="col-span-9"
-            />
+            <FormInput name="nome" placeholder="Nome Completo" type="text" formClass="col-span-9" />
+            <FormInput name="email" placeholder="Email" type="email" formClass="col-span-9" />
             <FormInput
               name="telefone"
               placeholder="Telefone/WhatsApp"
@@ -409,7 +406,7 @@ export default function Forms({ label }: FormProps) {
               formClass="col-span-9"
             />
             <FormButton label="Enviar Mensagem" formClass="col-span-4" />
-            {status && <p className="col-span-5">Enviado com sucesso!</p>}
+            {status && <p className="col-span-5">{status}</p>}
           </>
         );
       default:
@@ -418,10 +415,7 @@ export default function Forms({ label }: FormProps) {
   };
 
   return (
-    <form
-      className="grid grid-cols-9 items-center gap-2"
-      onSubmit={handleSubmit}
-    >
+    <form id={label} className="grid grid-cols-9 items-center gap-2" onSubmit={handleSubmit}>
       {renderFormFields()}
     </form>
   );

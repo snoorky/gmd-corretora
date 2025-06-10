@@ -40,10 +40,9 @@ export default function Consortium() {
           <h2 className="text-orange-light">Consórcio Inteligente</h2>
           <h4 className="-mt-2">Realize seus sonhos e fortaleça sua empresa</h4>
           <p className="my-4 md:my-8">
-            Oferecemos consultoria completa em consórcios, auxiliando pessoas e
-            empresas na escolha do grupo ideal para seus objetivos. Com zero
-            juros, é uma forma inteligente de adquirir bens, organizar as
-            finanças e construir patrimônio com planejamento.
+            Oferecemos consultoria completa em consórcios, auxiliando pessoas e empresas na escolha
+            do grupo ideal para seus objetivos. Com zero juros, é uma forma inteligente de adquirir
+            bens, organizar as finanças e construir patrimônio com planejamento.
           </p>
           <div className="grid gap-4 grid-cols-2 md:grid-cols-5 xl:grid-cols-1 mb-6 md:mb-12">
             {benefits.map((item, index) => (
@@ -69,7 +68,7 @@ export default function Consortium() {
         </div>
         <div className="bg-white/70 space-y-4 rounded-2xl text-dark mt-6 md:mt-12 xl:mt-0 p-4 md:p-8 xl:w-[40%]">
           <h3>Informe seu objetivo e receba as melhores opções do mercado.</h3>
-          <Forms label="Consórcio" />
+          <Forms label="Consorcio" />
         </div>
       </div>
     </section>

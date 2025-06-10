@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import nodemailer from "nodemailer";
 import { NextResponse } from "next/server";
 
@@ -31,10 +32,7 @@ export async function POST(req: Request) {
 
     console.log("E-mail enviado com sucesso:", info.messageId);
 
-    return NextResponse.json(
-      { message: "Enviado com sucesso" },
-      { status: 200 }
-    );
+    return NextResponse.json({ message: "Enviado com sucesso" }, { status: 200 });
   } catch (error) {
     console.error("Erro ao enviar e-mail:", error);
     return NextResponse.json(
@@ -46,24 +44,37 @@ export async function POST(req: Request) {
 
 function generateEmailHtml(data: Record<string, string>) {
   const isWhatsApp = (key: string): boolean =>
-    key.toLowerCase().includes("telefone") ||
-    key.toLowerCase().includes("whatsapp");
+    key.toLowerCase().includes("telefone") || key.toLowerCase().includes("whatsapp");
 
   const isEmail = (key: string): boolean => key.toLowerCase().includes("email");
 
-  const renderValue = (key: string, value: string): string => {
-    if (isWhatsApp(key)) {
+  const renderValue = (key: string, value: any): string => {
+    if (key === "idades") {
+      let arr: { faixa: string; quantidade: number }[] = [];
+      try {
+        arr = typeof value === "string" ? JSON.parse(value) : value;
+      } catch {
+        return value;
+      }
+      return arr.map(({ faixa, quantidade }) => `${faixa}: ${quantidade}`).join("<br/>");
+    }
+
+    if (Array.isArray(value)) {
+      return value.join(", ");
+    }
+
+    if (isWhatsApp(key) && typeof value === "string") {
       const phone = value.replace(/\D/g, "");
       return `<a href="https://api.whatsapp.com/send?phone=55${phone}" style="color:#ce5c3c; text-decoration:none">
         ${value} (WhatsApp)
       </a>`;
     }
 
-    if (isEmail(key)) {
+    if (isEmail(key) && typeof value === "string") {
       return `<a href="mailto:${value}" style="color:#ce5c3c; text-decoration:none">${value}</a>`;
     }
 
-    return value;
+    return String(value);
   };
 
   const rows = Object.entries(data)
