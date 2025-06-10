@@ -100,6 +100,15 @@ export function CookieConsentBanner() {
   const accept = () => {
     localStorage.setItem("cookieConsent", "accepted");
     updateConsent("granted", "granted", "granted", "granted");
+
+    window.dataLayer = window.dataLayer || [];
+    function gtag(...args: any[]) {
+      window.dataLayer.push(args);
+    }
+    gtag("config", "G-Y1T9FPW59X", {
+      page_path: window.location.pathname,
+    });
+
     setVisible(false);
   };
 
