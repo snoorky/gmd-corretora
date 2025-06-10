@@ -5,7 +5,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Script from "next/script";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 declare global {
   interface Window {
@@ -58,17 +58,6 @@ export function AnalyticsScripts() {
 export function CookieConsentBanner() {
   const pathname = usePathname();
   const [visible, setVisible] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (pathname.startsWith("/privacidade")) {
-      setVisible(false);
-      return;
-    }
-
-    const consent = localStorage.getItem("cookieConsent");
-    setVisible(!consent);
-  }, [pathname]);
 
   const updateConsent = (
     ad_storage: "granted" | "denied",
@@ -88,6 +77,26 @@ export function CookieConsentBanner() {
     });
   };
 
+  useEffect(() => {
+    if (pathname.startsWith("/privacidade")) {
+      setVisible(false);
+      return;
+    }
+
+    const consent = localStorage.getItem("cookieConsent");
+
+    if (!consent) {
+      setVisible(true);
+    } else {
+      setVisible(false);
+      if (consent === "accepted") {
+        updateConsent("granted", "granted", "granted", "granted");
+      } else {
+        updateConsent("denied", "denied", "denied", "denied");
+      }
+    }
+  }, [pathname]);
+
   const accept = () => {
     localStorage.setItem("cookieConsent", "accepted");
     updateConsent("granted", "granted", "granted", "granted");
@@ -103,10 +112,7 @@ export function CookieConsentBanner() {
   if (!visible) return null;
 
   return (
-    <div
-      ref={ref}
-      className="fixed inset-0 z-50 flex items-end p-6 justify-center bg-black/50 backdrop-blur-sm transition-opacity"
-    >
+    <div className="fixed inset-0 z-50 flex items-end p-6 justify-center bg-black/50 backdrop-blur-sm transition-opacity">
       <div className="bg-white p-6 rounded-2xl max-w-lg lg:max-w-full shadow-xl animate-fade-in">
         <div className="flex items-start lg:items-center gap-4">
           <span className="p-2 bg-blue/25 text-orange rounded-lg">
