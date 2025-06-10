@@ -3,7 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Link from "next/link";
 import Image from "next/image";
-import GoogleAnalytics from "./_components/analytics";
+import { AnalyticsScripts, CookieConsentBanner } from "./_components/analytics";
 
 const myFont = localFont({
   src: "./fonts/BebasNeue.ttf",
@@ -61,18 +61,15 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={myFont.className}>
+    <html lang="pt-BR" className={myFont.className}>
       <head>
         <link rel="icon" href="/favicon.png" />
+        <AnalyticsScripts />
       </head>
       <body className="antialiased">
-        <GoogleAnalytics />
+        <CookieConsentBanner />
         {children}
         <Link
           href="https://api.whatsapp.com/send?phone=5515981377486&text=Olá!+Gostaria+de+falar+com+um+consultor+sobre+seguro,+plano+de+saúde+ou+consórcio+sob+medida"

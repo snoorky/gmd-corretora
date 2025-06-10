@@ -4,7 +4,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import Script from "next/script";
+import { useEffect, useRef, useState } from "react";
 
 declare global {
   interface Window {
@@ -12,97 +13,100 @@ declare global {
   }
 }
 
-export default function CookieConsentBanner() {
-  const [show, setShow] = useState(false);
-  const pathname = usePathname();
+export function AnalyticsScripts() {
+  return (
+    <>
+      <Script id="consent-default" strategy="beforeInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){ dataLayer.push(arguments); }
+          gtag('consent','default',{
+            ad_storage:         'denied',
+            ad_user_data:       'denied',
+            ad_personalization: 'denied',
+            analytics_storage:  'denied'
+          });
+        `}
+      </Script>
 
-  const initializeConsentMode = (status: "granted" | "denied") => {
+      <Script
+        id="gtm-script"
+        strategy="afterInteractive"
+        src="https://www.googletagmanager.com/gtm.js?id=GTM-NZ8WGG2F"
+      />
+
+      <Script
+        id="ga-script"
+        strategy="afterInteractive"
+        src="https://www.googletagmanager.com/gtag/js?id=G-Y1T9FPW59X"
+      />
+
+      <Script id="ga-init" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){ dataLayer.push(arguments); }
+          gtag('js', new Date());
+          gtag('config', 'G-Y1T9FPW59X', {
+            page_path: window.location.pathname
+          });
+        `}
+      </Script>
+    </>
+  );
+}
+
+export function CookieConsentBanner() {
+  const pathname = usePathname();
+  const [visible, setVisible] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (pathname.startsWith("/privacidade")) {
+      setVisible(false);
+      return;
+    }
+
+    const consent = localStorage.getItem("cookieConsent");
+    setVisible(!consent);
+  }, [pathname]);
+
+  const updateConsent = (
+    ad_storage: "granted" | "denied",
+    ad_user_data: "granted" | "denied",
+    ad_personalization: "granted" | "denied",
+    analytics_storage: "granted" | "denied"
+  ) => {
     window.dataLayer = window.dataLayer || [];
     function gtag(...args: any[]) {
       window.dataLayer.push(args);
     }
-    gtag("consent", "default", {
-      ad_storage: "denied",
-      analytics_storage: "denied",
+    gtag("consent", "update", {
+      ad_storage,
+      ad_user_data,
+      ad_personalization,
+      analytics_storage,
     });
-    if (status === "granted") {
-      gtag("consent", "update", {
-        ad_storage: "granted",
-        analytics_storage: "granted",
-      });
-    }
   };
 
-  useEffect(() => {
-    const consent = localStorage.getItem("cookieConsent");
-    if (!consent) {
-      setShow(true);
-      initializeConsentMode("denied");
-    } else if (consent === "accepted") {
-      initializeConsentMode("granted");
-      loadGTM();
-    } else {
-      initializeConsentMode("denied");
-    }
-  }, []);
-
-  if (pathname === "/privacidade") return null;
-
-  const loadGTM = () => {
-    if (document.getElementById("gtm-script")) return;
-
-    const gtmScript = document.createElement("script");
-    gtmScript.id = "gtm-script";
-    gtmScript.innerHTML = `
-      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-      })(window,document,'script','dataLayer','GTM-NZ8WGG2F');
-    `;
-    document.head.appendChild(gtmScript);
-
-    const gaScript = document.createElement("script");
-    gaScript.src = "https://www.googletagmanager.com/gtag/js?id=G-Y1T9FPW59X";
-    gaScript.async = true;
-    document.head.appendChild(gaScript);
-
-    const gaInitScript = document.createElement("script");
-    gaInitScript.innerHTML = `
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-Y1T9FPW59X', {
-        page_path: window.location.pathname,
-      });
-    `;
-    document.head.appendChild(gaInitScript);
-
-    const noscript = document.createElement("noscript");
-    noscript.innerHTML = `
-      <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NZ8WGG2F"
-      height="0" width="0" style="display:none;visibility:hidden"></iframe>
-    `;
-    document.body.appendChild(noscript);
-  };
-
-  const acceptCookies = () => {
+  const accept = () => {
     localStorage.setItem("cookieConsent", "accepted");
-    setShow(false);
-    initializeConsentMode("granted");
-    loadGTM();
+    updateConsent("granted", "granted", "granted", "granted");
+    setVisible(false);
   };
 
-  const declineCookies = () => {
+  const decline = () => {
     localStorage.setItem("cookieConsent", "declined");
-    setShow(false);
-    initializeConsentMode("denied");
+    updateConsent("denied", "denied", "denied", "denied");
+    setVisible(false);
   };
 
-  if (!show) return null;
+  if (!visible) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end p-6 justify-center bg-black/50 backdrop-blur-sm transition-opacity">
+    <div
+      ref={ref}
+      className="fixed inset-0 z-50 flex items-end p-6 justify-center bg-black/50 backdrop-blur-sm transition-opacity"
+    >
       <div className="bg-white p-6 rounded-2xl max-w-lg lg:max-w-full shadow-xl animate-fade-in">
         <div className="flex items-start lg:items-center gap-4">
           <span className="p-2 bg-blue/25 text-orange rounded-lg">
@@ -125,13 +129,13 @@ export default function CookieConsentBanner() {
             </p>
             <div className="mt-4 lg:mt-0 flex gap-2">
               <button
-                onClick={declineCookies}
+                onClick={decline}
                 className="bg-gray-300 text-gray-800 text-sm font-medium px-4 py-2 rounded-lg transition-colors w-full"
               >
                 Recusar
               </button>
               <button
-                onClick={acceptCookies}
+                onClick={accept}
                 className="bg-blue text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors w-full"
               >
                 Aceitar

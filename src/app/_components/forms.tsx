@@ -219,14 +219,16 @@ export default function Forms({ label }: FormProps) {
     const formData = new FormData(form);
 
     if (label === "Saude") {
-      const raw = formData.get("idades") as string | null;
-      let array: { faixa: string; quantidade: number }[] = [];
+      const idadesJson = formData.get("idades") as string | null;
+      let selectedIdades: { faixa: string; quantidade: number }[] = [];
+
       try {
-        array = raw ? JSON.parse(raw) : [];
+        selectedIdades = idadesJson ? JSON.parse(idadesJson) : [];
       } catch {
-        array = [];
+        selectedIdades = [];
       }
-      if (array.length === 0) {
+
+      if (selectedIdades.length === 0) {
         setStatus("Seleciona a idade");
         return;
       }
@@ -234,6 +236,7 @@ export default function Forms({ label }: FormProps) {
 
     if (label === "Consorcio") {
       const selecionados = formData.getAll("consorcio");
+
       if (selecionados.length === 0) {
         setStatus("Selecione um consórcio");
         return;
