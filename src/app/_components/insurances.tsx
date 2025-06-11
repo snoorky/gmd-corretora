@@ -8,8 +8,7 @@ const insurances = [
     title: "Seguro de Vida",
     description: "Proteja quem você ama com coberturas essenciais",
     buttonLabel: "Proteger minha Família",
-    buttonText:
-      "Olá!+Tenho+interesse+no+Seguro+de+Vida+e+gostaria+de+mais+informações+para+proteger+eu+e+minha+família",
+    buttonText: "Olá!+Tenho+interesse+no+Seguro+de+Vida+e+gostaria+de+mais+informações+para+proteger+eu+e+minha+família",
   },
   {
     image: "seguro-auto",
@@ -23,24 +22,21 @@ const insurances = [
     title: "Seguro Residencial",
     description: "Seu lar protegido contra incêndios, furtos e imprevistos",
     buttonLabel: "Proteger minha Casa",
-    buttonText:
-      "Olá!+Estou+em+busca+de+um+Seguro+Residencial+para+proteger+minha+casa.+Pode+me+ajudar?",
+    buttonText: "Olá!+Estou+em+busca+de+um+Seguro+Residencial+para+proteger+minha+casa.+Pode+me+ajudar?",
   },
   {
     image: "seguro-empresarial",
     title: "Seguro Empresarial",
     description: "Segurança para patrimônio, equipamentos, estoque e mais",
     buttonLabel: "Proteger minha Empresa",
-    buttonText:
-      "Olá!+Tenho+interesse+no+Seguro+Empresarial+para+proteger+meu+negócio.+Pode+me+dar+mais+detalhes?",
+    buttonText: "Olá!+Tenho+interesse+no+Seguro+Empresarial+para+proteger+meu+negócio.+Pode+me+dar+mais+detalhes?",
   },
   {
     image: "seguro-viagem",
     title: "Seguro Viagem",
     description: "Proteção completa para você viajar tranquilo, no Brasil ou exterior",
     buttonLabel: "Viajar com Segurança",
-    buttonText:
-      "Olá!+Estou+planejando+uma+viagem+e+gostaria+de+contratar+um+Seguro+Viagem.+Pode+me+ajudar?",
+    buttonText: "Olá!+Estou+planejando+uma+viagem+e+gostaria+de+contratar+um+Seguro+Viagem.+Pode+me+ajudar?",
   },
   {
     image: "seguro-garantia",
@@ -54,8 +50,7 @@ const insurances = [
     title: "Seguro Fiança",
     description: "Aluguel sem fiador, com mais segurança e praticidade",
     buttonLabel: "Alugar sem Fiador",
-    buttonText:
-      "Olá!+Gostaria+de+saber+mais+sobre+o+Seguro+Fiança+para+alugar+um+imóvel+sem+fiador.",
+    buttonText: "Olá!+Gostaria+de+saber+mais+sobre+o+Seguro+Fiança+para+alugar+um+imóvel+sem+fiador.",
   },
   {
     image: "responsabilidade-civil",
@@ -74,15 +69,12 @@ export default function Insurances() {
         <h4 className="-mt-2">Para Você e sua Empresa</h4>
         <div className="grid gap-4 md:gap-6 grid-cols-2 xl:grid-cols-4 my-6 md:my-12">
           {insurances.map((item, index) => (
-            <div
-              key={index}
-              className="flex flex-col rounded-2xl justify-between overflow-hidden pb-2 md:pb-4 border border-orange bg-white"
-            >
-              <div className="">
+            <div key={index} className="flex flex-col rounded-2xl justify-between overflow-hidden pb-2 md:pb-4 border border-orange bg-white">
+              <div>
                 <div className="relative w-[170px] md:w-[340px] lg:w-[410px] xl:w-[280px] 2xl:w-[400px] h-[115px] md:h-[230px] lg:h-[276px] xl:h-[190px] 2xl:h-[266px]">
                   <Image
                     alt={item.title}
-                    src={`/${item.image}.png`}
+                    src={`/${item.image}.webp`}
                     sizes="(max-width: 767px) 170px, (max-width: 1023px) 340px, (max-width: 1279px) 410px, 500px"
                     className="absolute object-cover"
                     loading="lazy"
@@ -112,6 +104,7 @@ export default function Insurances() {
             alt="Família sorrindo por possuir seguro"
             src={"/seguro-background.png"}
             className="absolute object-cover object-top"
+            loading="lazy"
             fill
           />
           <div className="relative text-left space-y-2 xl:space-y-6 w-[72%] md:w-[50%] xl:w-[30%]">
@@ -122,11 +115,11 @@ export default function Insurances() {
       </section>
       <div
         className="absolute opacity-50 z-[-999] left-[-60%] top-[-40%] w-full h-full bg-contain bg-left bg-no-repeat"
-        style={{ backgroundImage: "url('/element.png')" }}
+        style={{ backgroundImage: "url('/element.webp')" }}
       ></div>
       <div
         className="absolute opacity-50 z-[-999] right-[-60%] bottom-[-40%] w-full h-full bg-contain bg-left bg-no-repeat"
-        style={{ backgroundImage: "url('/element.png')" }}
+        style={{ backgroundImage: "url('/element.webp')" }}
       ></div>
     </div>
   );

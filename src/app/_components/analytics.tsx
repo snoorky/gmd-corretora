@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { usePathname } from "next/navigation";
@@ -33,38 +32,27 @@ export function AnalyticsScripts({ GA_MEASUREMENT_ID }: { GA_MEASUREMENT_ID: str
 
   return (
     <>
-      <Script
-        id="gtm"
-        strategy="afterInteractive"
-        src="https://www.googletagmanager.com/gtm.js?id=GTM-NZ8WGG2F"
-      />
+      <Script id="gtm" strategy="afterInteractive" src="https://www.googletagmanager.com/gtm.js?id=GTM-NZ8WGG2F" />
 
-      <Script
-        strategy="afterInteractive"
-        src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
-      />
+      <Script strategy="afterInteractive" src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} />
 
-      <Script
-        id="google-analytics"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: `
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
+      <Script id="google-analytics" strategy="afterInteractive" dangerouslySetInnerHTML={{
+        __html: `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
 
-                gtag('consent', 'default', {
-                  'ad_storage': 'denied',
-                  'ad_user_data': 'denied',
-                  'ad_personalization': 'denied',
-                  'analytics_storage': 'denied',
-                });
+          gtag('consent', 'default', {
+            'ad_storage': 'denied',
+            'ad_user_data': 'denied',
+            'ad_personalization': 'denied',
+            'analytics_storage': 'denied',
+          });
                 
-                gtag('config', '${GA_MEASUREMENT_ID}', {
-                    page_path: window.location.pathname,
-                });
-                `,
-        }}
+          gtag('config', '${GA_MEASUREMENT_ID}', {
+            page_path: window.location.pathname,
+          });
+        `}}
       />
     </>
   );
@@ -93,10 +81,8 @@ export function CookieConsentBanner() {
   }, [cookieConsent]);
 
   return (
-    <div
-      className={`${
-        cookieConsent != null ? "hidden" : "flex"
-      } fixed inset-0 z-50 flex items-end p-6 justify-center bg-black/50 backdrop-blur-sm transition-opacity`}
+    <div className={`fixed inset-0 z-50 flex items-end p-6 justify-center bg-black/50 backdrop-blur-sm transition-opacity
+      ${cookieConsent != null ? "hidden" : "flex"}`}
     >
       <div className="bg-white p-6 rounded-2xl max-w-lg lg:max-w-full shadow-xl animate-fade-in">
         <div className="flex items-start lg:items-center gap-4">
@@ -106,29 +92,16 @@ export function CookieConsentBanner() {
             </svg>
           </span>
           <div className="lg:flex lg:items-center flex-1 text-gray-700 lg:gap-4">
-            <p className="text-sm">
-              Utilizamos cookies para melhorar sua experiência. Ao continuar, você concorda com
-              nossa política de privacidade.&nbsp;
-              <Link
-                href="/privacidade"
-                className="text-orange underline p-0 m-0 inline-flex text-sm"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+            <p className="text-sm">Utilizamos cookies para melhorar sua experiência. Ao continuar, você concorda com nossa política de privacidade.&nbsp;
+              <Link href="/privacidade" className="text-orange underline p-0 m-0 inline-flex text-sm" target="_blank" rel="noopener noreferrer">
                 Política de Privacidade
               </Link>
             </p>
             <div className="mt-4 lg:mt-0 flex gap-2">
-              <button
-                onClick={() => setCookieConsent(false)}
-                className="bg-gray-300 text-gray-800 text-sm font-medium px-4 py-2 rounded-lg transition-colors w-full"
-              >
+              <button onClick={() => setCookieConsent(false)} className="bg-gray-300 text-gray-800 text-sm font-medium px-4 py-2 rounded-lg transition-colors w-full">
                 Recusar
               </button>
-              <button
-                onClick={() => setCookieConsent(true)}
-                className="bg-blue text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors w-full"
-              >
+              <button onClick={() => setCookieConsent(true)} className="bg-blue text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors w-full">
                 Aceitar
               </button>
             </div>

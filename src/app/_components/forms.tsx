@@ -40,9 +40,7 @@ const FaixaIdadeSelect = ({ name, label, formClass, value = [] }: AgeRange) => {
 
   const [selecionados, setSelecionados] = useState<Record<string, number>>(() => {
     const map: Record<string, number> = {};
-    value.forEach(({ faixa, quantidade }) => {
-      map[faixa] = quantidade;
-    });
+    value.forEach(({ faixa, quantidade }) => { map[faixa] = quantidade });
     return map;
   });
 
@@ -68,19 +66,12 @@ const FaixaIdadeSelect = ({ name, label, formClass, value = [] }: AgeRange) => {
 
   const faixasSelecionadas = Object.entries(selecionados).filter(([_, qtd]) => qtd > 0);
   const totalVidas = faixasSelecionadas.reduce((acc, [_, qtd]) => acc + qtd, 0);
-  const resumo =
-    faixasSelecionadas.length === 0
-      ? label
-      : `${faixasSelecionadas.length} faixa(s), ${totalVidas} vida(s)`;
+  const resumo = faixasSelecionadas.length === 0 ? label : `${faixasSelecionadas.length} faixa(s), ${totalVidas} vida(s)`;
 
   return (
     <div ref={containerRef} className={`relative ${formClass}`}>
-      <button
-        type="button"
-        onClick={toggleOpen}
+      <button type="button" onClick={toggleOpen}
         className="w-full outline-none text-left border border-black/25 bg-white text-dark placeholder:text-dark"
-        aria-haspopup="listbox"
-        aria-expanded={open}
       >
         {resumo}
         <Image
@@ -93,85 +84,40 @@ const FaixaIdadeSelect = ({ name, label, formClass, value = [] }: AgeRange) => {
       </button>
 
       <div
-        className={`z-10 absolute grid grid-cols-2 xl:grid-cols-1 gap-1 gap-x-4 w-full mt-1 p-4 rounded-2xl shadow-lg border border-black/25 bg-white text-dark placeholder:text-dark transition-all duration-200 ${
-          open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-        }
-    `}
-        role="listbox"
+        className={`z-10 absolute grid grid-cols-2 xl:grid-cols-1 gap-1 gap-x-4 w-full mt-1 p-4 rounded-2xl shadow-lg border border-black/25 bg-white text-dark placeholder:text-dark transition-all duration-200 ${open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
       >
         {faixas.map(({ id, label }) => (
           <div key={id} className="col-span-1 flex justify-between items-center">
-            <label htmlFor={`${name}-${id}`} className="select-none">
-              {label}
-            </label>
-            <input
-              id={`${name}-${id}`}
-              type="number"
-              min={0}
-              max={99}
-              value={selecionados[id] ?? ""}
-              onChange={(e) => handleQuantidadeChange(id, e.target.value)}
+            <label htmlFor={`${name}-${id}`} className="select-none">{label}</label>
+            <input id={`${name}-${id}`} type="number" placeholder="0"
+              value={selecionados[id] ?? ""} onChange={(e) => handleQuantidadeChange(id, e.target.value)}
               className="rounded-xl text-center border border-black/25"
-              placeholder="0"
             />
           </div>
         ))}
       </div>
 
-      <input
-        type="hidden"
-        name={name}
-        value={JSON.stringify(
-          faixasSelecionadas.map(([faixa, quantidade]) => ({
-            faixa,
-            quantidade,
-          }))
-        )}
-      />
+      <input type="hidden" name={name} value={JSON.stringify(faixasSelecionadas.map(([faixa, quantidade]) => ({ faixa, quantidade })))} />
     </div>
   );
 };
 
 const FormInput = ({ name, placeholder, type, formClass, required = true }: FormProps) => (
-  <input
-    name={name}
-    placeholder={placeholder}
-    type={type}
-    className={`h-10 md:h-12 ${formClass}`}
-    required={required}
-  />
+  <input name={name} placeholder={placeholder} type={type} className={`h-10 md:h-12 ${formClass}`} required={required} />
 );
 
 const FormTextArea = (props: FormProps) => (
-  <textarea
-    name={props.name}
-    placeholder={props.placeholder}
-    className={`h-20 pt-2 resize-none ${props.formClass}`}
-    required
-  />
+  <textarea name={props.name} placeholder={props.placeholder} className={`h-20 pt-2 resize-none ${props.formClass}`} required />
 );
 
 const FormSelect = (props: OptionsProps) => (
   <div className={`${props.formClass} relative`}>
-    <select
-      aria-label={props.name}
-      name={props.name}
-      className="h-10 md:h-12 w-full"
-      style={{
-        WebkitAppearance: "none",
-        MozAppearance: "none",
-        appearance: "none",
-      }}
-      defaultValue=""
-      required
+    <select name={props.name} className="h-10 md:h-12 w-full" defaultValue="" required
+      style={{ WebkitAppearance: "none", MozAppearance: "none", appearance: "none" }}
     >
-      <option value="" disabled hidden>
-        {props.label}
-      </option>
+      <option value="" disabled hidden>{props.label}</option>
       {props.options.map((item, index) => (
-        <option key={index} value={item}>
-          {item}
-        </option>
+        <option key={index} value={item}>{item}</option>
       ))}
     </select>
     <Image
@@ -190,12 +136,7 @@ const FormCheckbox = (props: OptionsProps) => (
     <div className="flex items-center flex-wrap gap-2">
       {props.options.map((option, index) => (
         <label key={index}>
-          <input
-            name={props.name}
-            value={option}
-            type="checkbox"
-            className="accent-orange rounded-none px-0"
-          />
+          <input name={props.name} value={option} type="checkbox" className="accent-orange rounded-none px-0" />
           <span className="ml-1">{option}</span>
         </label>
       ))}
@@ -204,9 +145,7 @@ const FormCheckbox = (props: OptionsProps) => (
 );
 
 const FormButton = (props: FormProps) => (
-  <button type="submit" className={`text-white bg-orange ${props.formClass}`}>
-    {props.label}
-  </button>
+  <button type="submit" className={`text-white bg-orange ${props.formClass}`}>{props.label}</button>
 );
 
 export default function Forms({ label }: FormProps) {
@@ -268,16 +207,8 @@ export default function Forms({ label }: FormProps) {
           <>
             <FormInput name="nome" placeholder="Nome Completo" type="text" formClass="col-span-9" />
             <FormInput name="email" placeholder="Email" type="email" formClass="col-span-9" />
-            <FormInput
-              name="telefone"
-              placeholder="Telefone/WhatsApp"
-              type="tel"
-              formClass="col-span-9"
-            />
-            <FormSelect
-              name="seguros"
-              label="Tipo de Seguro"
-              formClass="col-span-9"
+            <FormInput name="telefone" placeholder="Telefone/WhatsApp" type="tel" formClass="col-span-9" />
+            <FormSelect name="seguros" label="Tipo de Seguro" formClass="col-span-9"
               options={[
                 "Vida",
                 "Auto",
@@ -296,94 +227,26 @@ export default function Forms({ label }: FormProps) {
       case "Saude":
         return (
           <>
-            <FormInput
-              name="nome"
-              placeholder="Nome do Responsável"
-              type="text"
-              formClass="col-span-9 md:col-span-5 xl:col-span-9"
-            />
-            <FormInput
-              name="email"
-              placeholder="Email"
-              type="email"
-              formClass="col-span-9 md:col-span-4 xl:col-span-9"
-            />
-            <FormInput
-              name="empresa"
-              placeholder="Empresa (opcional)"
-              type="text"
-              formClass="col-span-9 md:col-span-5 xl:col-span-5"
-              required={false}
-            />
-            <FormInput
-              name="telefone"
-              placeholder="Telefone/WhatsApp"
-              type="tel"
-              formClass="col-span-9 md:col-span-4 xl:col-span-4"
-            />
-            <FormSelect
-              name="plano"
-              label="Tipo de Plano"
-              formClass="col-span-9 md:col-span-3"
-              options={["Empresarial", "Familiar", "Individual"]}
-            />
-            <FaixaIdadeSelect
-              id=""
-              name="idades"
-              label="Idades dos beneficiários"
-              formClass="col-span-9 md:col-span-6"
-            />
-            <FormTextArea
-              name="mensagem"
-              placeholder="Descreva aqui se deseja plano com coparticipação, rede específica ou outro"
-              formClass="col-span-9"
-            />
-            <FormButton
-              label="Enviar solicitação de plano de saúde"
-              formClass="col-span-9 md:col-span-4 xl:col-span-6"
-            />
-            {status && (
-              <p className="col-span-9 md:col-span-2 lg:col-span-2 xl:col-span-3">{status}</p>
-            )}
+            <FormInput name="nome" placeholder="Nome do Responsável" type="text" formClass="col-span-9 md:col-span-5 xl:col-span-9" />
+            <FormInput name="email" placeholder="Email" type="email" formClass="col-span-9 md:col-span-4 xl:col-span-9" />
+            <FormInput name="empresa" placeholder="Empresa (opcional)" type="text" formClass="col-span-9 md:col-span-5 xl:col-span-5" required={false} />
+            <FormInput name="telefone" placeholder="Telefone/WhatsApp" type="tel" formClass="col-span-9 md:col-span-4 xl:col-span-4" />
+            <FormSelect name="plano" label="Tipo de Plano" formClass="col-span-9 md:col-span-3" options={["Empresarial", "Familiar", "Individual"]} />
+            <FaixaIdadeSelect id="" name="idades" label="Idades dos beneficiários" formClass="col-span-9 md:col-span-6" />
+            <FormTextArea name="mensagem" placeholder="Descreva aqui se deseja plano com coparticipação, rede específica ou outro" formClass="col-span-9" />
+            <FormButton label="Enviar solicitação de plano de saúde" formClass="col-span-9 md:col-span-4 xl:col-span-6" />
+            {status && (<p className="col-span-9 md:col-span-2 lg:col-span-2 xl:col-span-3">{status}</p>)}
           </>
         );
       case "Consorcio":
         return (
           <>
-            <FormInput
-              name="nome"
-              placeholder="Nome do Responsável"
-              type="text"
-              formClass="col-span-9 md:col-span-4 xl:col-span-9"
-            />
-            <FormInput
-              name="email"
-              placeholder="Email"
-              type="email"
-              formClass="col-span-9 md:col-span-5"
-            />
-            <FormInput
-              name="telefone"
-              placeholder="Telefone/WhatsApp"
-              type="tel"
-              formClass="col-span-9 md:col-span-3 xl:col-span-4"
-            />
-            <FormInput
-              name="cidade"
-              placeholder="Cidade/Estado"
-              type="text"
-              formClass="col-span-9 md:col-span-3 xl:col-span-5"
-            />
-            <FormInput
-              name="valor"
-              placeholder="Valor do Bem"
-              type="text"
-              formClass="col-span-9 md:col-span-3 xl:col-span-4"
-            />
-            <FormCheckbox
-              name="consorcio"
-              label="Tipo de Consórcio"
-              formClass="col-span-9"
+            <FormInput name="nome" placeholder="Nome do Responsável" type="text" formClass="col-span-9 md:col-span-4 xl:col-span-9" />
+            <FormInput name="email" placeholder="Email" type="email" formClass="col-span-9 md:col-span-5" />
+            <FormInput name="telefone" placeholder="Telefone/WhatsApp" type="tel" formClass="col-span-9 md:col-span-3 xl:col-span-4" />
+            <FormInput name="cidade" placeholder="Cidade/Estado" type="text" formClass="col-span-9 md:col-span-3 xl:col-span-5" />
+            <FormInput name="valor" placeholder="Valor do Bem" type="text" formClass="col-span-9 md:col-span-3 xl:col-span-4" />
+            <FormCheckbox name="consorcio" label="Tipo de Consórcio" formClass="col-span-9"
               options={[
                 "Imóvel residencial",
                 "Imóvel comercial",
@@ -393,10 +256,7 @@ export default function Forms({ label }: FormProps) {
               ]}
             />
             <FormTextArea name="mensagem" placeholder="Mensagem adicional" formClass="col-span-9" />
-            <FormButton
-              label="Simular Consórcio"
-              formClass="col-span-9 md:col-span-2 xl:col-span-3"
-            />
+            <FormButton label="Simular Consórcio" formClass="col-span-9 md:col-span-2 xl:col-span-3" />
             {status && <p className="col-span-9 md:col-span-3 xl:col-span-4">{status}</p>}
           </>
         );
@@ -405,23 +265,9 @@ export default function Forms({ label }: FormProps) {
           <>
             <FormInput name="nome" placeholder="Nome Completo" type="text" formClass="col-span-9" />
             <FormInput name="email" placeholder="Email" type="email" formClass="col-span-9" />
-            <FormInput
-              name="telefone"
-              placeholder="Telefone/WhatsApp"
-              type="tel"
-              formClass="col-span-9 md:col-span-4"
-            />
-            <FormSelect
-              name="servico"
-              label="Tipo de Serviço"
-              formClass="col-span-9 md:col-span-5"
-              options={["Seguro", "Plano de Saúde", "Consórcio"]}
-            />
-            <FormTextArea
-              name="mensagem"
-              placeholder="Escreva aqui sua dúvida, necessidade ou solicitação"
-              formClass="col-span-9"
-            />
+            <FormInput name="telefone" placeholder="Telefone/WhatsApp" type="tel" formClass="col-span-9 md:col-span-4" />
+            <FormSelect name="servico" label="Tipo de Serviço" formClass="col-span-9 md:col-span-5" options={["Seguro", "Plano de Saúde", "Consórcio"]} />
+            <FormTextArea name="mensagem" placeholder="Escreva aqui sua dúvida, necessidade ou solicitação" formClass="col-span-9" />
             <FormButton label="Enviar Mensagem" formClass="col-span-4" />
             {status && <p className="col-span-5">{status}</p>}
           </>

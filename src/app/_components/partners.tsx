@@ -39,29 +39,25 @@ export default function Partners() {
   useEffect(() => {
     const ctx = gsap.context(() => {
       if (topLine.current) {
-        gsap.fromTo(
-          topLine.current,
-          { x: "0%" },
-          {
-            x: "-50%",
-            duration: 50,
-            ease: "linear",
-            repeat: -1,
-          }
-        );
+        gsap.fromTo(topLine.current, {
+          x: "0%"
+        }, {
+          x: "-50%",
+          duration: 50,
+          ease: "linear",
+          repeat: -1,
+        });
       }
 
       if (bottomLine.current) {
-        gsap.fromTo(
-          bottomLine.current,
-          { x: "-50%" },
-          {
-            x: "0%",
-            duration: 50,
-            ease: "linear",
-            repeat: -1,
-          }
-        );
+        gsap.fromTo(bottomLine.current, {
+          x: "-50%"
+        }, {
+          x: "0%",
+          duration: 50,
+          ease: "linear",
+          repeat: -1,
+        });
       }
     });
 
@@ -73,10 +69,7 @@ export default function Partners() {
       <div className="overflow-hidden">
         <div ref={topLine} className="flex w-max">
           {[...topLogos, ...topLogos].map((logo, index) => (
-            <div
-              key={`top-${index}`}
-              className="flex items-center mx-4 transition relative w-32 h-16"
-            >
+            <div key={`top-${index}`} className="flex items-center mx-4 transition relative w-32 h-16">
               <Image
                 alt={`Logo ${index}`}
                 className="absolute object-contain"
@@ -91,10 +84,7 @@ export default function Partners() {
       <div className="overflow-hidden mt-4">
         <div ref={bottomLine} className="flex w-max h-20">
           {[...bottomLogos, ...bottomLogos].map((logo, index) => (
-            <div
-              key={`bottom-${index}`}
-              className="flex items-center mx-4 transition relative w-32 h-16"
-            >
+            <div key={`bottom-${index}`} className="flex items-center mx-4 transition relative w-32 h-16">
               <Image
                 alt={`Logo ${index}`}
                 className="absolute object-contain"

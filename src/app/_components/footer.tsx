@@ -45,9 +45,7 @@ export default function Footer() {
             {contact.map((item, index) => (
               <div key={index} className="flex items-center gap-2">
                 <Image alt={item.icon} src={`/icons/${item.icon}.svg`} width={24} height={24} />
-                <Link className="p-0" target="_blank" href={item.url}>
-                  {item.title}
-                </Link>
+                <Link className="p-0" target="_blank" href={item.url}>{item.title}</Link>
               </div>
             ))}
           </div>

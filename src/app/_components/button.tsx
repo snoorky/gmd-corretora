@@ -10,20 +10,9 @@ interface ButtonProps {
   size?: number;
 }
 
-export function Button({
-  label,
-  target = "_blank",
-  url,
-  icon,
-  isPrimary,
-  size,
-}: ButtonProps) {
+export function Button({ label, url, icon, isPrimary, size, target = "_blank"}: ButtonProps) {
   return (
-    <Link
-      href={url}
-      target={target}
-      className={`${isPrimary ? "bg-blue" : "bg-orange"} text-white`}
-    >
+    <Link href={url} target={target} className={`${isPrimary ? "bg-blue" : "bg-orange"} text-white`}>
       {icon && (
         <Image
           alt={`Ícone de ${label}`}

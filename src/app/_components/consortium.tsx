@@ -31,7 +31,7 @@ export default function Consortium() {
       <Image
         alt="Imagem de background"
         className="absolute object-cover"
-        src="/consortium-background.png"
+        src="/background-consortium.webp"
         fill
       />
       <div className="absolute w-screen h-full bg-black/50 inset-0"></div>
@@ -46,10 +46,7 @@ export default function Consortium() {
           </p>
           <div className="grid gap-4 grid-cols-2 md:grid-cols-5 xl:grid-cols-1 mb-6 md:mb-12">
             {benefits.map((item, index) => (
-              <div
-                key={index}
-                className="flex items-center flex-col xl:flex-row gap-2 last:col-span-2 md:last:col-span-1"
-              >
+              <div key={index} className="flex items-center flex-col xl:flex-row gap-2 last:col-span-2 md:last:col-span-1">
                 <Image
                   alt={`Ícone de ${item.icon}`}
                   src={`/icons/${item.icon}.svg`}

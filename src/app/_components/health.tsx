@@ -27,7 +27,7 @@ export default function Health() {
       <Image
         alt="Imagem de background"
         className="absolute object-cover"
-        src="/health-background.png"
+        src="/background-health.webp"
         fill
       />
       <div className="absolute w-screen h-full bg-black/50 inset-0"></div>

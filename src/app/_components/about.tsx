@@ -30,7 +30,7 @@ export default function About() {
           <Image
             alt="Imagem de background"
             className="absolute object-cover"
-            src="/about-background.png"
+            src="/background-about.webp"
             fill
           />
         </div>
@@ -38,7 +38,7 @@ export default function About() {
           <Image
             alt="Imagem de background"
             className="absolute object-cover"
-            src="/about-background-secondary.png"
+            src="/background-abouts.webp"
             fill
           />
         </div>
