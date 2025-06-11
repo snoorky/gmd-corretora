@@ -102,7 +102,7 @@ export default function Insurances() {
         >
           <Image
             alt="Família sorrindo por possuir seguro"
-            src={"/seguro-background.png"}
+            src={"/background-insurances.webp"}
             className="absolute object-cover object-top"
             loading="lazy"
             fill
