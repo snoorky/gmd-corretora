@@ -1,159 +1,96 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 "use client";
 
+import { usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import Script from "next/script";
 import { useEffect, useState } from "react";
 
-declare global {
-  interface Window {
-    dataLayer: any[];
-  }
+const pageview = (GA_MEASUREMENT_ID: string, url: string) => {
+  window.gtag("config", GA_MEASUREMENT_ID, {
+    page_path: url,
+  });
+};
+
+function getLocalStorage(key: string, defaultValue: any) {
+  const stickyValue = localStorage.getItem(key);
+
+  return stickyValue !== null && stickyValue !== "undefined"
+    ? JSON.parse(stickyValue)
+    : defaultValue;
 }
 
-export function AnalyticsScripts() {
+function setLocalStorage(key: string, value: any) {
+  localStorage.setItem(key, JSON.stringify(value));
+}
+
+export function AnalyticsScripts({ GA_MEASUREMENT_ID }: { GA_MEASUREMENT_ID: string }) {
+  const pathname = usePathname();
+  const searchParams = useSearchParams;
+
+  useEffect(() => {
+    const url = pathname + searchParams.toString();
+    pageview(GA_MEASUREMENT_ID, url);
+  }, [pathname, searchParams, GA_MEASUREMENT_ID]);
+
   return (
     <>
-      <Script id="consent-default" strategy="beforeInteractive">
-        {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){ dataLayer.push(arguments); }
-          gtag('consent','default',{
-            ad_storage:         'denied',
-            ad_user_data:       'denied',
-            ad_personalization: 'denied',
-            analytics_storage:  'denied'
-          });
-        `}
-      </Script>
+      {/* <Script id="gtm" strategy="afterInteractive" src="https://www.googletagmanager.com/gtm.js?id=GTM-NZ8WGG2F" /> */}
 
-      <Script id="consent-reapply" strategy="beforeInteractive">
-        {`
-          (function(){
-            try {
-              const consent = localStorage.getItem('cookieConsent');
-              console.log('Reapply consent, localStorage cookieConsent=', consent);
-              if (consent === 'accepted') {
+      <Script
+        strategy="afterInteractive"
+        src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+      />
+
+      {/* G-Y1T9FPW59X */}
+      <Script
+        id="google-analytics"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
                 window.dataLayer = window.dataLayer || [];
-                function gtag(){ dataLayer.push(arguments); console.log('gtag reapply called:', arguments); }
-                gtag('consent','update',{
-                  ad_storage:         'granted',
-                  ad_user_data:       'granted',
-                  ad_personalization: 'granted',
-                  analytics_storage:  'granted'
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+
+                gtag('consent', 'default', {
+                    'analytics_storage': 'denied'
                 });
-              }
-            } catch(err) {
-              console.error('Error reapplying consent:', err);
-            }
-          })();
-        `}
-      </Script>
-
-      <Script
-        id="gtm"
-        strategy="afterInteractive"
-        src="https://www.googletagmanager.com/gtm.js?id=GTM-NZ8WGG2F"
+                
+                gtag('config', '${GA_MEASUREMENT_ID}', {
+                    page_path: window.location.pathname,
+                });
+                `,
+        }}
       />
-
-      <Script
-        id="ga"
-        strategy="afterInteractive"
-        src="https://www.googletagmanager.com/gtag/js?id=G-Y1T9FPW59X"
-      />
-
-      <Script id="ga-init" strategy="afterInteractive">
-        {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){ dataLayer.push(arguments); }
-          gtag('js', new Date());
-          gtag('config', 'G-Y1T9FPW59X', {
-            page_path: window.location.pathname
-          });
-        `}
-      </Script>
     </>
   );
 }
 
 export function CookieConsentBanner() {
-  const pathname = usePathname();
-  const [visible, setVisible] = useState(false);
-
-  const updateConsent = (
-    ad_storage: "granted" | "denied",
-    ad_user_data: "granted" | "denied",
-    ad_personalization: "granted" | "denied",
-    analytics_storage: "granted" | "denied"
-  ) => {
-    window.dataLayer = window.dataLayer || [];
-    function gtag(...args: any[]) {
-      window.dataLayer.push(args);
-      console.log("gtag consent update called:", args);
-    }
-    gtag("consent", "update", {
-      ad_storage,
-      ad_user_data,
-      ad_personalization,
-      analytics_storage,
-    });
-  };
+  const [cookieConsent, setCookieConsent] = useState(false);
 
   useEffect(() => {
-    if (pathname.startsWith("/privacidade")) return;
+    const storedCookieConsent = getLocalStorage("cookie_consent", null);
+    setCookieConsent(storedCookieConsent);
+  }, [setCookieConsent]);
 
-    const consent = localStorage.getItem("cookieConsent");
+  useEffect(() => {
+    const newValue = cookieConsent ? "granted" : "denied";
 
-    if (!consent) {
-      setVisible(true);
-    } else {
-      setVisible(false);
-      updateConsent(
-        consent === "accepted" ? "granted" : "denied",
-        consent === "accepted" ? "granted" : "denied",
-        consent === "accepted" ? "granted" : "denied",
-        consent === "accepted" ? "granted" : "denied"
-      );
-
-      if (consent === "accepted") {
-        window.dataLayer = window.dataLayer || [];
-        function gtag(...args: any[]) {
-          window.dataLayer.push(args);
-        }
-        gtag("config", "G-Y1T9FPW59X", { page_path: window.location.pathname });
-      }
-    }
-  }, [pathname]);
-
-  const accept = () => {
-    localStorage.setItem("cookieConsent", "accepted");
-    updateConsent("granted", "granted", "granted", "granted");
-
-    // reconfigura o GA4
-    window.dataLayer = window.dataLayer || [];
-    function gtag(...args: any[]) {
-      window.dataLayer.push(args);
-      console.log("gtag config after accept called:", args);
-    }
-    gtag("config", "G-Y1T9FPW59X", {
-      page_path: window.location.pathname,
+    window.gtag("consent", "update", {
+      analytics_storage: newValue,
     });
 
-    setVisible(false);
-  };
-
-  const decline = () => {
-    localStorage.setItem("cookieConsent", "declined");
-    updateConsent("denied", "denied", "denied", "denied");
-    setVisible(false);
-  };
-
-  if (!visible) return null;
+    setLocalStorage("cookie_consent", cookieConsent);
+    console.log("Cookie Consent: ", cookieConsent);
+  }, [cookieConsent]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end p-6 justify-center bg-black/50 backdrop-blur-sm transition-opacity">
+    <div
+      className={`${
+        cookieConsent != null ? "hidden" : "flex"
+      } fixed inset-0 z-50 flex items-end p-6 justify-center bg-black/50 backdrop-blur-sm transition-opacity`}
+    >
       <div className="bg-white p-6 rounded-2xl max-w-lg lg:max-w-full shadow-xl animate-fade-in">
         <div className="flex items-start lg:items-center gap-4">
           <span className="p-2 bg-blue/25 text-orange rounded-lg">
@@ -176,13 +113,13 @@ export function CookieConsentBanner() {
             </p>
             <div className="mt-4 lg:mt-0 flex gap-2">
               <button
-                onClick={decline}
+                onClick={() => setCookieConsent(false)}
                 className="bg-gray-300 text-gray-800 text-sm font-medium px-4 py-2 rounded-lg transition-colors w-full"
               >
                 Recusar
               </button>
               <button
-                onClick={accept}
+                onClick={() => setCookieConsent(true)}
                 className="bg-blue text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors w-full"
               >
                 Aceitar

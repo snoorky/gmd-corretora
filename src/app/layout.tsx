@@ -66,11 +66,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="pt-BR" className={myFont.className}>
       <head>
         <link rel="icon" href="/favicon.png" />
-        <AnalyticsScripts />
+        <AnalyticsScripts GA_MEASUREMENT_ID="G-Y1T9FPW59X" />
       </head>
       <body className="antialiased">
-        <CookieConsentBanner />
         {children}
+        <CookieConsentBanner />
         <Link
           href="https://api.whatsapp.com/send?phone=5515981377486&text=Olá!+Gostaria+de+falar+com+um+consultor+sobre+seguro,+plano+de+saúde+ou+consórcio+sob+medida"
           target="_blank"
