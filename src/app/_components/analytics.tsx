@@ -26,7 +26,7 @@ function setLocalStorage(key: string, value: any) {
 
 export function AnalyticsScripts({ GA_MEASUREMENT_ID }: { GA_MEASUREMENT_ID: string }) {
   const pathname = usePathname();
-  const searchParams = useSearchParams;
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     const url = pathname + searchParams.toString();
@@ -56,10 +56,10 @@ export function AnalyticsScripts({ GA_MEASUREMENT_ID }: { GA_MEASUREMENT_ID: str
                 gtag('js', new Date());
 
                 gtag('consent', 'default', {
-                  'ad_storage': 'denied'
-                  'ad_user_data': 'denied'
-                  'ad_personalization': 'denied'
-                  'analytics_storage': 'denied'
+                  'ad_storage': 'denied',
+                  'ad_user_data': 'denied',
+                  'ad_personalization': 'denied',
+                  'analytics_storage': 'denied',
                 });
                 
                 gtag('config', '${GA_MEASUREMENT_ID}', {
