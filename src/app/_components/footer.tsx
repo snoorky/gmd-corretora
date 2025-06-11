@@ -61,8 +61,8 @@ export default function Footer() {
             src="/logo-light.webp"
             sizes="(max-width: 767px) 206px, (max-width: 1023px) 274px, (max-width: 1279px) 324px, 400px"
             className="absolute"
+            loading="lazy"
             fill
-            priority
           />
         </div>
         <p>© 2025 GMD Corretora. Todos os direitos reservados.</p>
