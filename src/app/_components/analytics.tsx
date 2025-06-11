@@ -35,14 +35,17 @@ export function AnalyticsScripts({ GA_MEASUREMENT_ID }: { GA_MEASUREMENT_ID: str
 
   return (
     <>
-      {/* <Script id="gtm" strategy="afterInteractive" src="https://www.googletagmanager.com/gtm.js?id=GTM-NZ8WGG2F" /> */}
+      <Script
+        id="gtm"
+        strategy="afterInteractive"
+        src="https://www.googletagmanager.com/gtm.js?id=GTM-NZ8WGG2F"
+      />
 
       <Script
         strategy="afterInteractive"
         src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
       />
 
-      {/* G-Y1T9FPW59X */}
       <Script
         id="google-analytics"
         strategy="afterInteractive"
@@ -53,7 +56,10 @@ export function AnalyticsScripts({ GA_MEASUREMENT_ID }: { GA_MEASUREMENT_ID: str
                 gtag('js', new Date());
 
                 gtag('consent', 'default', {
-                    'analytics_storage': 'denied'
+                  'ad_storage': 'denied'
+                  'ad_user_data': 'denied'
+                  'ad_personalization': 'denied'
+                  'analytics_storage': 'denied'
                 });
                 
                 gtag('config', '${GA_MEASUREMENT_ID}', {
@@ -78,6 +84,9 @@ export function CookieConsentBanner() {
     const newValue = cookieConsent ? "granted" : "denied";
 
     window.gtag("consent", "update", {
+      ad_storage: newValue,
+      ad_user_data: newValue,
+      ad_personalization: newValue,
       analytics_storage: newValue,
     });
 
