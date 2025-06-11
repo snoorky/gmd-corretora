@@ -6,8 +6,8 @@ export default function Hero() {
     <main className="relative w-screen h-auto pt-8 text-white">
       <Image
         alt="Imagem de background"
-        src="/banners.jpg"
-        className="absolute object-cover transform scale-x-[-1]"
+        src="/hero.png"
+        className="absolute object-cover object-bottom"
         fill
         priority
       />
