@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Script from "next/script";
 import { useEffect, useState } from "react";
@@ -26,12 +26,10 @@ function setLocalStorage(key: string, value: any) {
 
 export function AnalyticsScripts({ GA_MEASUREMENT_ID }: { GA_MEASUREMENT_ID: string }) {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   useEffect(() => {
-    const url = pathname + searchParams.toString();
-    pageview(GA_MEASUREMENT_ID, url);
-  }, [pathname, searchParams, GA_MEASUREMENT_ID]);
+    pageview(GA_MEASUREMENT_ID, pathname);
+  }, [pathname, GA_MEASUREMENT_ID]);
 
   return (
     <>
