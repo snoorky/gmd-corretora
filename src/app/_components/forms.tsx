@@ -256,7 +256,7 @@ export default function Forms({ label }: FormProps) {
               ]}
             />
             <FormTextArea name="mensagem" placeholder="Mensagem adicional" formClass="col-span-9" />
-            <FormButton label="Simular Consórcio" formClass="col-span-9 md:col-span-2 xl:col-span-3" />
+            <FormButton label="Simular Consórcio" formClass="col-span-9 md:col-span-2 xl:col-span-4" />
             {status && <p className="col-span-9 md:col-span-3 xl:col-span-4">{status}</p>}
           </>
         );
