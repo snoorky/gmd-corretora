@@ -1,80 +1,80 @@
 @import "tailwindcss";
 
 @theme {
-  --color-orange: #ce5c3c;
-  --color-orange-light: #ff8e6e;
-  --color-blue: #1e3759;
-  --color-dark: #3f3f3f;
-  --color-gray: #868686;
+	--color-orange: #ce5c3c;
+	--color-orange-light: #ff8e6e;
+	--color-blue: #1e3759;
+	--color-dark: #3f3f3f;
+	--color-gray: #868686;
 }
 
 @layer base {
-  html {
-    scroll-behavior: smooth;
-  }
+	html {
+		scroll-behavior: smooth;
+	}
 
-  main {
-    @apply px-4 md:px-16 lg:px-24 xl:px-32;
-    @apply pb-8 md:pb-16 lg:pb-24 xl:pb-32;
-  }
+	main {
+		@apply px-4 md:px-16 lg:px-24 xl:px-32;
+		@apply pb-8 md:pb-16 lg:pb-24 xl:pb-32;
+	}
 
-  section {
-    @apply px-4 md:px-16 lg:px-24 xl:px-32;
-    @apply py-8 md:py-16 lg:py-24;
-  }
+	section {
+		@apply px-4 md:px-16 lg:px-24 xl:px-32;
+		@apply py-8 md:py-16 lg:py-24;
+	}
 
-  h1 {
-    @apply text-4xl md:text-5xl lg:text-6xl xl:text-7xl;
-    @apply mt-6 md:mt-12 xl:mt-32;
-    @apply mb-2 md:mb-4;
-  }
+	h1 {
+		@apply text-4xl md:text-5xl lg:text-6xl xl:text-7xl;
+		@apply mt-6 md:mt-12 xl:mt-32;
+		@apply mb-2 md:mb-4;
+	}
 
-  h2 {
-    @apply text-3xl md:text-4xl lg:text-5xl;
-  }
+	h2 {
+		@apply text-3xl md:text-4xl lg:text-5xl;
+	}
 
-  h3 {
-    @apply text-xl md:text-2xl lg:text-3xl xl:text-2xl;
-  }
+	h3 {
+		@apply text-xl md:text-2xl lg:text-3xl xl:text-2xl;
+	}
 
-  h4 {
-    @apply text-lg md:text-2xl lg:text-3xl;
-  }
+	h4 {
+		@apply text-lg md:text-2xl lg:text-3xl;
+	}
 
-  h6 {
-    @apply text-lg md:text-2xl lg:text-3xl;
-    @apply px-6;
-    @apply mb-6 md:mb-8 lg:mb-10 xl:mb-12;
-  }
+	h6 {
+		@apply text-lg md:text-2xl lg:text-3xl;
+		@apply px-6;
+		@apply mb-6 md:mb-8 lg:mb-10 xl:mb-12;
+	}
 
-  p {
-    @apply text-sm md:text-lg lg:text-xl xl:text-lg;
-  }
+	p {
+		@apply text-sm md:text-lg lg:text-xl xl:text-lg;
+	}
 
-  a {
-    @apply rounded-2xl;
-    @apply flex items-center justify-center;
-    @apply gap-2;
-    @apply py-2 md:py-3;
-    @apply px-4 md:px-6;
-    @apply text-sm md:text-lg lg:text-xl xl:text-lg;
-  }
+	a {
+		@apply rounded-2xl;
+		@apply flex items-center justify-center;
+		@apply gap-2;
+		@apply py-2 md:py-3;
+		@apply px-4 md:px-6;
+		@apply text-sm md:text-lg lg:text-xl xl:text-lg;
+	}
 
-  button {
-    @apply rounded-xl;
-    @apply px-4;
-    @apply h-10 md:h-12;
-  }
+	button {
+		@apply rounded-xl;
+		@apply px-4;
+		@apply h-10 md:h-12;
+	}
 
-  input,
-  textarea,
-  select {
-    @apply border border-black/25 bg-white text-dark placeholder:text-dark outline-none;
-    @apply rounded-xl;
-    @apply px-4;
-  }
+	input,
+	textarea,
+	select {
+		@apply border border-black/25 bg-white text-dark placeholder:text-dark outline-none;
+		@apply rounded-xl;
+		@apply px-4;
+	}
 
-  select {
-    @apply appearance-none;
-  }
+	select {
+		@apply appearance-none;
+	}
 }
