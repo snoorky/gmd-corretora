@@ -103,7 +103,7 @@ const FaixaIdadeSelect = ({ name, label, formClass, value = [] }: AgeRange) => {
 };
 
 const FormInput = ({ name, placeholder, type, formClass, required = true }: FormProps) => (
-  <input name={name} placeholder={placeholder} type={type} className={`h-10 md:h-12 ${formClass}`} required={required} />
+  <input name={name} placeholder={placeholder} type={type} autoComplete={name !== "tel" ? "off" : "tel"} className={`h-10 md:h-12 ${formClass}`} required={required} />
 );
 
 const FormTextArea = (props: FormProps) => (

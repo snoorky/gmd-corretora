@@ -68,7 +68,7 @@ const insurances = [
 
 export default function Insurances() {
 	return (
-		<div className="overflow-hidden">
+		<div className="relative overflow-hidden">
 			<section className="relative z-1 flex flex-col text-center">
 				<h2 className="text-orange">Seguros</h2>
 				<h4 className="-mt-2">Para Você e sua Empresa</h4>
@@ -79,12 +79,12 @@ export default function Insurances() {
 							className="flex flex-col rounded-2xl justify-between overflow-hidden pb-2 md:pb-4 border border-orange bg-white"
 						>
 							<div>
-								<div className="relative w-[170px] md:w-[340px] lg:w-[410px] xl:w-[280px] 2xl:w-[400px] h-[115px] md:h-[230px] lg:h-[276px] xl:h-[190px] 2xl:h-[266px]">
+								<div className="relative aspect-video">
 									<Image
 										alt={item.title}
 										src={`/${item.image}.webp`}
 										sizes="(max-width: 767px) 170px, (max-width: 1023px) 340px, (max-width: 1279px) 410px, 500px"
-										className="absolute object-cover"
+										className="absolute aspect-video object-cover"
 										loading="lazy"
 										fill
 									/>

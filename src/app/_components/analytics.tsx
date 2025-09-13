@@ -77,7 +77,6 @@ export function CookieConsentBanner() {
     });
 
     setLocalStorage("cookie_consent", cookieConsent);
-    console.log("Cookie Consent: ", cookieConsent);
   }, [cookieConsent]);
 
   return (
